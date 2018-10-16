@@ -82,6 +82,14 @@ $ pip3 install gym
 $ pip3 install baselines
 ```
 
+### Install Other Packages
+```
+$ pip3 install opencv-python
+$ pip3 install pandas
+$ pip3 install matplotlib
+
+```
+
 ## How to run
 
 ### Set up
