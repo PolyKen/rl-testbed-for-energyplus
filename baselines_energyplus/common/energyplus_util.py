@@ -12,6 +12,7 @@ from baselines.common.vec_env.subproc_vec_env import SubprocVecEnv
 from mpi4py import MPI
 import glob
 
+
 def make_energyplus_env(env_id, seed):
     """
     Create a wrapped, monitored gym.Env for EnergyEnv
@@ -21,12 +22,14 @@ def make_energyplus_env(env_id, seed):
     env.seed(seed)
     return env
 
+
 def arg_parser():
     """
     Create an empty argparse.ArgumentParser.
     """
     import argparse
     return argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
 
 def energyplus_arg_parser():
     """
@@ -41,6 +44,7 @@ def energyplus_arg_parser():
     parser.add_argument('--checkpoint', help='checkpoint file', type=str, default='')
     return parser
 
+
 def energyplus_locate_log_dir(index=0):
     pat = energyplus_logbase_dir() + '/openai-????-??-??-??-??-??-??????*/progress.csv'
     files = [(f, os.path.getmtime(f)) for f in glob.glob(pat)]
@@ -48,6 +52,7 @@ def energyplus_locate_log_dir(index=0):
     dir = os.path.dirname(newest)
     print('energyplus_locate_log_dir: {}'.format(dir))
     return dir
+
 
 def energyplus_logbase_dir():
     logbase_dir = os.getenv('ENERGYPLUS_LOGBASE')
