@@ -5,6 +5,8 @@ from baselines_energyplus.common.energyplus_util import make_energyplus_env, ene
     energyplus_logbase_dir
 from baselines import logger
 from baselines.ppo1.mlp_policy import MlpPolicy
+from baselines.ppo1.cnn_policy import CnnPolicy
+from baselines.ppo2.policies import LstmPolicy
 from baselines.trpo_mpi import trpo_mpi
 import os
 import shutil
@@ -12,15 +14,20 @@ import datetime
 import gym_energyplus
 
 
-def train(env_id, num_timesteps, seed):
+def mlp_policy_fn(name, ob_space, ac_space):
+    return MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space,
+                     hid_size=32, num_hid_layers=2)
+
+
+def cnn_policy_fn(name, ob_space, ac_space):
+    return CnnPolicy(name=name, ob_space=ob_space, ac_space=ac_space, kind='small')
+
+
+def train(env_id, num_timesteps, seed, policy_fn=mlp_policy_fn):
     import baselines.common.tf_util as U
     sess = U.single_threaded_session()
     sess.__enter__()
     workerseed = seed + 10000 * MPI.COMM_WORLD.Get_rank()
-
-    def policy_fn(name, ob_space, ac_space):
-        return MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space,
-                         hid_size=32, num_hid_layers=2)
 
     # Create a new base directory like /tmp/openai-2018-05-21-12-27-22-552435
     log_dir = os.path.join(energyplus_logbase_dir(), datetime.datetime.now().strftime("openai-%Y-%m-%d-%H-%M-%S-%f"))
@@ -30,11 +37,11 @@ def train(env_id, num_timesteps, seed):
     model = os.getenv('ENERGYPLUS_MODEL')
     if model is None:
         print('Environment variable ENERGYPLUS_MODEL is not defined')
-        os.exit()
+        return
     weather = os.getenv('ENERGYPLUS_WEATHER')
     if weather is None:
         print('Environment variable ENERGYPLUS_WEATHER is not defined')
-        os.exit()
+        return
 
     rank = MPI.COMM_WORLD.Get_rank()
     if rank == 0:
