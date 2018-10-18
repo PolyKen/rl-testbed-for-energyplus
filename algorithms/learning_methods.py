@@ -1,18 +1,17 @@
 from baselines.trpo_mpi.trpo_mpi import *
 
 
-# rewrite learning algorithm here
-def new_learn(env, policy_fn, *,
-              timesteps_per_batch,  # what to train on
-              max_kl, cg_iters,
-              gamma, lam,  # advantage estimation
-              entcoeff=0.0,
-              cg_damping=1e-2,
-              vf_stepsize=3e-4,
-              vf_iters=3,
-              max_timesteps=0, max_episodes=0, max_iters=0,  # time constraint
-              callback=None
-              ):
+def default_learn(env, policy_fn, *,
+                  timesteps_per_batch,  # what to train on
+                  max_kl, cg_iters,
+                  gamma, lam,  # advantage estimation
+                  entcoeff=0.0,
+                  cg_damping=1e-2,
+                  vf_stepsize=3e-4,
+                  vf_iters=3,
+                  max_timesteps=0, max_episodes=0, max_iters=0,  # time constraint
+                  callback=None
+                  ):
     nworkers = MPI.COMM_WORLD.Get_size()
     rank = MPI.COMM_WORLD.Get_rank()
     np.set_printoptions(precision=3)
@@ -211,3 +210,18 @@ def new_learn(env, policy_fn, *,
 
         if rank == 0:
             logger.dump_tabular()
+
+
+# rewrite learning algorithm here
+def new_learn(env, policy_fn, *,
+                  timesteps_per_batch,  # what to train on
+                  max_kl, cg_iters,
+                  gamma, lam,  # advantage estimation
+                  entcoeff=0.0,
+                  cg_damping=1e-2,
+                  vf_stepsize=3e-4,
+                  vf_iters=3,
+                  max_timesteps=0, max_episodes=0, max_iters=0,  # time constraint
+                  callback=None
+                  ):
+    pass

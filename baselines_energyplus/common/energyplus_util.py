@@ -42,6 +42,10 @@ def energyplus_arg_parser():
     parser.add_argument('--save-interval', type=int, default=int(0))
     parser.add_argument('--model-pickle', help='model pickle', type=str, default='')
     parser.add_argument('--checkpoint', help='checkpoint file', type=str, default='')
+    parser.add_argument('--learn', '-l', help='name of some function in algorithms/learning_methods.py', type=str,
+                        default='default_learn')
+    parser.add_argument('--policy', '-p', help='name of some class in algorithms/policies.py', type=str,
+                        default='DefaultMlpPolicy')
     return parser
 
 
