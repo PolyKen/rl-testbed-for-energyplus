@@ -14,17 +14,13 @@ import datetime
 import gym_energyplus
 
 
-def mlp_policy_fn(name, ob_space, ac_space):
-    return MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space,
-                     hid_size=32, num_hid_layers=2)
-
-
-def cnn_policy_fn(name, ob_space, ac_space):
-    return CnnPolicy(name=name, ob_space=ob_space, ac_space=ac_space, kind='small')
-
-
-def train(env_id, num_timesteps, seed, policy_fn=mlp_policy_fn):
+def train(env_id, num_timesteps, seed, learn=trpo_mpi.learn, policy_fn_class=MlpPolicy):
     import baselines.common.tf_util as U
+
+    def policy_fn(name, ob_space, ac_space):
+        return policy_fn_class(name=name, ob_space=ob_space, ac_space=ac_space,
+                         hid_size=32, num_hid_layers=2)
+
     sess = U.single_threaded_session()
     sess.__enter__()
     workerseed = seed + 10000 * MPI.COMM_WORLD.Get_rank()
@@ -53,11 +49,11 @@ def train(env_id, num_timesteps, seed, policy_fn=mlp_policy_fn):
 
     env = make_energyplus_env(env_id, workerseed)
 
-    trpo_mpi.learn(env, policy_fn,
-                   max_timesteps=num_timesteps,
-                   # timesteps_per_batch=1*1024, max_kl=0.01, cg_iters=10, cg_damping=0.1,
-                   timesteps_per_batch=16 * 1024, max_kl=0.01, cg_iters=10, cg_damping=0.1,
-                   gamma=0.99, lam=0.98, vf_iters=5, vf_stepsize=1e-3)
+    learn(env, policy_fn,
+          max_timesteps=num_timesteps,
+          # timesteps_per_batch=1*1024, max_kl=0.01, cg_iters=10, cg_damping=0.1,
+          timesteps_per_batch=16 * 1024, max_kl=0.01, cg_iters=10, cg_damping=0.1,
+          gamma=0.99, lam=0.98, vf_iters=5, vf_stepsize=1e-3)
     env.close()
 
 

@@ -339,7 +339,7 @@ class EnergyPlusModel(metaclass=ABCMeta):
             self.episode_dirs = [os.path.dirname(csv_file)]
             self.num_episodes = len(self.episode_dirs)
 
-    # Model dependent methods
+    # Model dependent algorithms
     @abstractmethod
     def read_episode(self, ep):
         pass
