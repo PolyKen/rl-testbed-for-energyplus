@@ -38,7 +38,7 @@ def energyplus_arg_parser():
     parser = arg_parser()
     parser.add_argument('--env', '-e', help='environment ID', type=str, default='EnergyPlus-v0')
     parser.add_argument('--seed', '-s', help='RNG seed', type=int, default=0)
-    parser.add_argument('--num-timesteps', type=int, default=int(100))
+    parser.add_argument('--num-timesteps', '-n', type=int, default=int(100))
     parser.add_argument('--save-interval', type=int, default=int(0))
     parser.add_argument('--model-pickle', help='model pickle', type=str, default='')
     parser.add_argument('--checkpoint', help='checkpoint file', type=str, default='')
