@@ -212,7 +212,7 @@ def default_learn(env, policy_fn, *,
             logger.dump_tabular()
 
 
-# rewrite learning algorithm here
+# TODO: rewrite your own learning algorithm here
 def new_learn(env, policy_fn, *,
                   timesteps_per_batch,  # what to train on
                   max_kl, cg_iters,

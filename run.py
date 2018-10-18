@@ -1,7 +1,9 @@
 from baselines_energyplus.trpo_mpi.run_energyplus import train
 from baselines_energyplus.common.energyplus_util import energyplus_arg_parser
-from algorithms import * # please keep it
 import sys
+
+'''PLEASE KEEP THIS LINE'''
+from algorithms import *
 
 # using customized learning algorithms and policy functions
 
