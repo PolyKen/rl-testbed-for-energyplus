@@ -28,7 +28,7 @@ export ENERGYPLUS_LOGBASE="${HOME}/eplog"
 
 # Model file. Uncomment one.
 #export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer_Temp.idf"     # Temp. setpoint control
-export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer_Temp_Fan.idf" # Temp. setpoint and fan control
+export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer_Temp.idf" # Temp. setpoint and fan control
 
 # Run command (example)
 # $ time python3 -m baselines_energyplus.trpo_mpi.run_energyplus --num-timesteps 1000000000
