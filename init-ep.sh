@@ -1,4 +1,4 @@
-#specify the top directory
+#specify the top directory where you clone this repository
 TOP=/home/vthree/Repo/rl-testbed-for-energyplus
 export PYTHONPATH=${PYTHONPATH}:${TOP}
 MODEL_DIR="${TOP}/EnergyPlus/Model"

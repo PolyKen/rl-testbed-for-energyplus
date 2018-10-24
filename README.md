@@ -93,10 +93,16 @@ $ pip3 install matplotlib
 ## How to run
 
 ### Set up
-Some environment variables are already defined in `init-ep.sh`
+Some environment variables are already defined in `init-ep.sh` and you still need to specify the top directory.
 
 ```
 $ cd <WORKING-DIRECTORY>/rl-testbed-for-energyplus
+$ vim init-ep.sh
+```
+TOP directory is where you clone this repository:
+`TOP = <your-working-directory>/rl-testbed-for-energyplus`
+
+```
 $ source init-ep.sh
 ```
 
