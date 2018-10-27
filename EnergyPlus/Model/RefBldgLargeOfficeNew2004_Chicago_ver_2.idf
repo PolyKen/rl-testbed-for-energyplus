@@ -9533,62 +9533,88 @@
   Output:Variable,VAV_5 Supply Equipment Outlet Node,Supply Equipment Outlet Node,timestep;
   
   EnergyManagementSystem:Sensor,
-    VAV_1 Sensor, ! Name
+    VAV_1Sensor, ! Name
 	VAV_1 Supply Equipment Outlet Node, ! Output:Variable Index Key Name
 	Supply Equipment Outlet Node; ! Output:Variable Name
 	
   EnergyManagementSystem:Sensor,
-    VAV_2 Sensor, ! Name
+    VAV_2Sensor, ! Name
 	VAV_2 Supply Equipment Outlet Node, ! Output:Variable Index Key Name
 	Supply Equipment Outlet Node; ! Output:Variable Name
 	
   EnergyManagementSystem:Sensor,
-    VAV_3 Sensor, ! Name
+    VAV_3Sensor, ! Name
 	VAV_3 Supply Equipment Outlet Node, ! Output:Variable Index Key Name
 	Supply Equipment Outlet Node; ! Output:Variable Name
 	
   EnergyManagementSystem:Sensor,
-    VAV_4 Sensor, ! Name
+    VAV_4Sensor, ! Name
 	VAV_4 Supply Equipment Outlet Node, ! Output:Variable Index Key Name
 	Supply Equipment Outlet Node; ! Output:Variable Name
 	
   EnergyManagementSystem:Sensor,
-    VAV_5 Sensor, ! Name
+    VAV_5Sensor, ! Name
 	VAV_5 Supply Equipment Outlet Node, ! Output:Variable Index Key Name
 	Supply Equipment Outlet Node; ! Output:Variable Name
 	
 
   EnergyManagementSystem:Actuator,
-    VAV_1 SAT setpoint actuator, ! Name
+    VAV_1Setpoint, ! Name
 	VAV_1 Supply Equipment Outlet Node, ! Actuated Component Unique Name
 	System Node Setpoint, ! Actuated Component Type
 	Temperature Setpoint; ! Actuated Component Control Type
 
   EnergyManagementSystem:Actuator,
-    VAV_2 SAT setpoint actuator,
+    VAV_2Setpoint,
 	VAV_2 Supply Equipment Outlet Node,
 	System Node Setpoint,
 	Temperature Setpoint;
 	
   EnergyManagementSystem:Actuator,
-    VAV_3 SAT setpoint actuator,
+    VAV_3Setpoint,
 	VAV_3 Supply Equipment Outlet Node,
 	System Node Setpoint,
 	Temperature Setpoint;
 	
   EnergyManagementSystem:Actuator,
-    VAV_4 SAT setpoint actuator,
+    VAV_4Setpoint,
 	VAV_4 Supply Equipment Outlet Node,
 	System Node Setpoint,
 	Temperature Setpoint;
 	
   EnergyManagementSystem:Actuator,
-    VAV_5 SAT setpoint actuator,
+    VAV_5Setpoint,
 	VAV_5 Supply Equipment Outlet Node,
 	System Node Setpoint,
 	Temperature Setpoint;
 	
   EnergyManagementSystem:ProgramCallingManager,
-    ! Name
-	! Calling Point
-	! Program Name
+    Init ExtCtrl-Based Setpoint Manager, ! Name
+	EndOfZoneSizng, ! Calling Point
+	InitializeExtCtrlBasedSetpointManager; ! Program Name
+	
+  EnergyManagementSystem:ProgramCallingManager,
+    ExtCtrl-Based Setpoint Manager, ! Name
+	AfterPredictorAfterHVACManagers, ! Calling Point
+	ExtCtrlBasedSetpointManager; ! Program Name
+	
+  EnergyManagementSystem:Program,
+	InitializeExtCtrlBasedSetpointManager, ! Name
+	SET temp_var = @ExtCtrlObs 0;
+	
+  EnergyManagementSystem:Program,
+    ExtCtrlBasedSetpointManager, ! Name
+	SET temp_var = @ExtCtrlObs 1 VAV_1Sensor,
+	SET temp_var = @ExtCtrlObs 2 VAV_2Sensor,
+	SET temp_var = @ExtCtrlObs 3 VAV_3Sensor,
+	SET temp_var = @ExtCtrlObs 4 VAV_4Sensor,
+	SET temp_var = @ExtCtrlObs 5 VAV_5Sensor,
+	SET temp_var = @ExtCtrlObs 6 VAV_5Sensor,
+	SET temp_var = @ExtCtrlObs 7 VAV_5Sensor,
+	SET temp_var = @ExtCtrlAct 0 7,
+	
+	SET VAV_1Setpoint = @ExtCtrlAct 1,
+	SET VAV_2Setpoint = @ExtCtrlAct 1,
+	SET VAV_3Setpoint = @ExtCtrlAct 1,
+	SET VAV_4Setpoint = @ExtCtrlAct 1,
+	SET VAV_5Setpoint = @ExtCtrlAct 1;
