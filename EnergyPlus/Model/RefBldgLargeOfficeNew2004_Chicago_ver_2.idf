@@ -9325,56 +9325,52 @@ Output:EnergyManagementSystem,
     Verbose,                 !- Internal Variable Availability Dictionary Reporting
     Verbose;                 !- EMS Runtime Language Debug Output Level
 
-Output:Variable,VAV_1 Supply Equipment Outlet Node,Supply Equipment Outlet Node,timestep;
-Output:Variable,VAV_2 Supply Equipment Outlet Node,Supply Equipment Outlet Node,timestep;
-Output:Variable,VAV_3 Supply Equipment Outlet Node,Supply Equipment Outlet Node,timestep;
-Output:Variable,VAV_4 Supply Equipment Outlet Node,Supply Equipment Outlet Node,timestep;
-Output:Variable,VAV_5 Supply Equipment Outlet Node,Supply Equipment Outlet Node,timestep;
+Output:Variable,
+	VAV_1 Supply Equipment Outlet Node,
+	Supply Equipment Outlet Node,
+	timestep;
+Output:Variable,
+	VAV_2 Supply Equipment Outlet Node,
+	Supply Equipment Outlet Node,
+	timestep;
+Output:Variable,
+	VAV_3 Supply Equipment Outlet Node,
+	Supply Equipment Outlet Node,
+	timestep;
+Output:Variable,
+	VAV_4 Supply Equipment Outlet Node,
+	Supply Equipment Outlet Node,
+	timestep;
+Output:Variable,
+	VAV_5 Supply Equipment Outlet Node,
+	Supply Equipment Outlet Node,
+	timestep;
 
-! Name
-! Output:Variable Index Key Name
-! Output:Variable Name
 EnergyManagementSystem:Sensor,
     VAV_1Sensor,             !- Name
     VAV_1 Supply Equipment Outlet Node,  !- Output:Variable or Output:Meter Index Key Name
     Supply Equipment Outlet Node;  !- Output:Variable or Output:Meter Name
 
-! Name
-! Output:Variable Index Key Name
-! Output:Variable Name
 EnergyManagementSystem:Sensor,
     VAV_2Sensor,             !- Name
     VAV_2 Supply Equipment Outlet Node,  !- Output:Variable or Output:Meter Index Key Name
     Supply Equipment Outlet Node;  !- Output:Variable or Output:Meter Name
 
-! Name
-! Output:Variable Index Key Name
-! Output:Variable Name
 EnergyManagementSystem:Sensor,
     VAV_3Sensor,             !- Name
     VAV_3 Supply Equipment Outlet Node,  !- Output:Variable or Output:Meter Index Key Name
     Supply Equipment Outlet Node;  !- Output:Variable or Output:Meter Name
 
-! Name
-! Output:Variable Index Key Name
-! Output:Variable Name
 EnergyManagementSystem:Sensor,
     VAV_4Sensor,             !- Name
     VAV_4 Supply Equipment Outlet Node,  !- Output:Variable or Output:Meter Index Key Name
     Supply Equipment Outlet Node;  !- Output:Variable or Output:Meter Name
 
-! Name
-! Output:Variable Index Key Name
-! Output:Variable Name
 EnergyManagementSystem:Sensor,
     VAV_5Sensor,             !- Name
     VAV_5 Supply Equipment Outlet Node,  !- Output:Variable or Output:Meter Index Key Name
     Supply Equipment Outlet Node;  !- Output:Variable or Output:Meter Name
 
-! Name
-! Actuated Component Unique Name
-! Actuated Component Type
-! Actuated Component Control Type
 EnergyManagementSystem:Actuator,
     VAV_1Setpoint,           !- Name
     VAV_1 Supply Equipment Outlet Node,  !- Actuated Component Unique Name
@@ -9405,28 +9401,20 @@ EnergyManagementSystem:Actuator,
     System Node Setpoint,    !- Actuated Component Type
     Temperature Setpoint;    !- Actuated Component Control Type
 
-! Name
-! Calling Point
-! Program Name
 EnergyManagementSystem:ProgramCallingManager,
     Init ExtCtrl-Based Setpoint Manager,  !- Name
     EndOfZoneSizing,         !- EnergyPlus Model Calling Point
     InitializeExtCtrlBasedSetpointManager;  !- Program Name 1
 
-! Name
-! Calling Point
-! Program Name
 EnergyManagementSystem:ProgramCallingManager,
     ExtCtrl-Based Setpoint Manager,  !- Name
     AfterPredictorAfterHVACManagers,  !- EnergyPlus Model Calling Point
     ExtCtrlBasedSetpointManager;  !- Program Name 1
 
-! Name
 EnergyManagementSystem:Program,
     InitializeExtCtrlBasedSetpointManager,  !- Name
     SET temp_var = @ExtCtrlObs 0;  !- Program Line 1
 
-! Name
 EnergyManagementSystem:Program,
     ExtCtrlBasedSetpointManager,  !- Name
     IF WarmupFlag == 0.0,
@@ -9444,11 +9432,11 @@ EnergyManagementSystem:Program,
         SET VAV_4Setpoint = @ExtCtrlAct 1,  !- A13
         SET VAV_5Setpoint = @ExtCtrlAct 1,  !- A14
     ELSE,
-        SET VAV_1Setpoint = 10,  !- A10
-        SET VAV_2Setpoint = 10,  !- A11
-        SET VAV_3Setpoint = 10,  !- A12
-        SET VAV_4Setpoint = 10,  !- A13
-        SET VAV_5Setpoint = 10,  !- A14
+        SET VAV_1Setpoint = 10,  
+        SET VAV_2Setpoint = 10,  
+        SET VAV_3Setpoint = 10,  
+        SET VAV_4Setpoint = 10,  
+        SET VAV_5Setpoint = 10,  
     ENDIF;
 
 
