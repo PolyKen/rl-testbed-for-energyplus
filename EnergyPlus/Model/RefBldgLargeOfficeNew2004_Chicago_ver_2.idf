@@ -9358,7 +9358,7 @@ EnergyManagementSystem:Program,
         SET temp_var = @ExtCtrlAct 0 7,  !- A9
         SET TestActuator = @ExtCtrlAct 1,  !- A10
     ELSE,
-        SET TestSensor = 10, 
+        SET TestActuator = 10, 
     ENDIF;
 
 
