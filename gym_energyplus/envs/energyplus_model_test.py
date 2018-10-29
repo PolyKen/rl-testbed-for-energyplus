@@ -23,7 +23,7 @@ class EnergyPlusModelTest(EnergyPlusModel):
                  model_file,
                  log_dir,
                  verbose=False):
-        super(EnergyPlusModel2ZoneDataCenterHVAC_wEconomizer_Temp, self).__init__(model_file, log_dir, verbose)
+        super(EnergyPlusModelTest, self).__init__(model_file, log_dir, verbose)
         self.reward_low_limit = -10000.
         self.axepisode = None
         self.num_axes = 5
