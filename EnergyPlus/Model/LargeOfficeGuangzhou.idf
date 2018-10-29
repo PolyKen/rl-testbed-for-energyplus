@@ -9315,14 +9315,26 @@ FuelFactors,
     ,                        !- Nuclear High Level Emission Factor Schedule Name
     0;                       !- Nuclear Low Level Emission Factor {m3/MJ}
 
+Output:Variable,*,VAV_1 Supply Equipment Outlet Node,hourly;
+Output:Variable,*,Temp Internal Variable,hourly;
+
 Output:EnergyManagementSystem,
     Verbose,                 !- Actuator Availability Dictionary Reporting
     Verbose,                 !- Internal Variable Availability Dictionary Reporting
     Verbose;                 !- EMS Runtime Language Debug Output Level
 
+EnergyManagementSystem:GlobalVariable,
+    TempGlobalVariable;      !- Erl Variable 1 Name
+
+EnergyManagementSystem:OutputVariable,
+    Temp Internal Variable,  !- Name
+    TempGlobalVariable,      !- EMS Variable Name
+    Averaged,                !- Type of Data in Variable
+    ZoneTimestep;            !- Update Frequency
+
 EnergyManagementSystem:Sensor,
     TestSensor,              !- Name
-    Core_mid,  !- Output:Variable or Output:Meter Index Key Name
+    Core_mid,                !- Output:Variable or Output:Meter Index Key Name
     Zone Mean Air Temperature;  !- Output:Variable or Output:Meter Name
 
 EnergyManagementSystem:Actuator,
@@ -9336,33 +9348,28 @@ EnergyManagementSystem:ProgramCallingManager,
     EndOfZoneSizing,         !- EnergyPlus Model Calling Point
     InitializeExtCtrlBasedSetpointManager;  !- Program Name 1
 
-! Name
-! Calling Point
-! Program Name
 EnergyManagementSystem:ProgramCallingManager,
     ExtCtrl-Based Setpoint Manager,  !- Name
     AfterPredictorAfterHVACManagers,  !- EnergyPlus Model Calling Point
     ExtCtrlBasedSetpointManager;  !- Program Name 1
 
-! Name
 EnergyManagementSystem:Program,
     InitializeExtCtrlBasedSetpointManager,  !- Name
     SET temp_var = @ExtCtrlObs 0;  !- Program Line 1
 
-! Name
 EnergyManagementSystem:Program,
     ExtCtrlBasedSetpointManager,  !- Name
-    IF WarmupFlag == 0.0,
-        SET temp_var = @ExtCtrlObs 1 TestSensor,  !- Program Line 1
-        SET temp_var = @ExtCtrlObs 2 TestSensor,  !- Program Line 2
-        SET temp_var = @ExtCtrlObs 3 TestSensor,  !- A4
-        SET temp_var = @ExtCtrlObs 4 TestSensor,  !- A5
-        SET temp_var = @ExtCtrlObs 5 TestSensor,  !- A6
-        SET temp_var = @ExtCtrlObs 6 TestSensor,  !- A7
-        SET temp_var = @ExtCtrlObs 7 TestSensor,  !- A8
-        SET temp_var = @ExtCtrlAct 0 7,  !- A9
-        SET TestActuator = @ExtCtrlAct 1,  !- A10
-    ELSE,
-        SET TestActuator = 10,
-    ENDIF;
+    IF WarmupFlag == 0.0,    !- Program Line 1
+    SET temp_var = @ExtCtrlObs 1 TestSensor,  !- Program Line 2
+    SET temp_var = @ExtCtrlObs 2 TestSensor,  !- A4
+    SET temp_var = @ExtCtrlObs 3 TestSensor,  !- A5
+    SET temp_var = @ExtCtrlObs 4 TestSensor,  !- A6
+    SET temp_var = @ExtCtrlObs 5 TestSensor,  !- A7
+    SET temp_var = @ExtCtrlObs 6 TestSensor,  !- A8
+    SET temp_var = @ExtCtrlObs 7 TestSensor,  !- A9
+    SET temp_var = @ExtCtrlAct 0 7,  !- A10
+    SET TestActuator = @ExtCtrlAct 1,  !- A11
+    ELSE,                    !- A12
+    SET TempGlobalVariable = TestSensor,  !- A13
+    ENDIF;                   !- A14
 
