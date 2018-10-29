@@ -27,8 +27,12 @@ export ENERGYPLUS_WEATHER="${WEATHER_DIR}/USA_CA_San.Francisco.Intl.AP.724940_TM
 export ENERGYPLUS_LOGBASE="${HOME}/eplog"
 
 # Model file. Uncomment one.
+#export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer_Temp_ver_2.idf"
 #export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer_Temp.idf"     # Temp. setpoint control
-export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer_Temp.idf" # Temp. setpoint and fan control
+#export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer_Temp.idf" # Temp. setpoint and fan control
+#export ENERGYPLUS_MODEL="${MODEL_DIR}/RefBldgLargeOfficeNew2004_Chicago_ver_2.idf"
+#export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer-baseline-test.idf"
+export ENERGYPLUS_MODEL="${MODEL_DIR}/LargeOfficeGuangzhou.idf"
 
 # Run command (example)
 # $ time python3 -m baselines_energyplus.trpo_mpi.run_energyplus --num-timesteps 1000000000
