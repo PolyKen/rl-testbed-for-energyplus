@@ -88,8 +88,7 @@ class EnergyPlusModelTest(EnergyPlusModel):
             self.raw_state = [0.0]
 
     def compute_reward(self):
-        # rew, _ = self._compute_reward()
-        rew = 1
+        rew, _ = self._compute_reward()
         return rew
 
     def _compute_reward(self, raw_state=None):
@@ -247,7 +246,7 @@ class EnergyPlusModelTest(EnergyPlusModel):
     #   state[4] = raw_state[5]: Whole Building:Facility Total Building Electric Demand Power [W](Hourly)
     #   state[5] = raw_state[6]: Whole Building:Facility Total HVAC Electric Demand Power [W](Hourly)
     def format_state(self, raw_state):
-        return np.array([raw_state[0]])
+        return np.array([raw_state[0], raw_state[1], raw_state[2], raw_state[3], raw_state[4], raw_state[5], raw_state[6]])
 
     def read_episode(self, ep):
         if type(ep) is str:

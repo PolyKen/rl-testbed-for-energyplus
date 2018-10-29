@@ -10143,7 +10143,13 @@
     CoolSys1_SchedSetpoint,  !- Name
     !SET CoolSys1_Loop_Setpoint = CW_Loop_Temp_Schedule;  !- Program Line 1
 	SET temp_var = @ExtCtrlObs 1 CW_Loop_Temp_Schedule,
-	SET temp_var = @ExtCtrlAct 0 1,
+	SET temp_var = @ExtCtrlObs 2 CW_Loop_Temp_Schedule,
+	SET temp_var = @ExtCtrlObs 3 CW_Loop_Temp_Schedule,
+	SET temp_var = @ExtCtrlObs 4 CW_Loop_Temp_Schedule,
+	SET temp_var = @ExtCtrlObs 5 CW_Loop_Temp_Schedule,
+	SET temp_var = @ExtCtrlObs 6 CW_Loop_Temp_Schedule,
+	SET temp_var = @ExtCtrlObs 7 CW_Loop_Temp_Schedule,
+	SET temp_var = @ExtCtrlAct 0 7,
 	SET CoolSys1_Loop_Setpoint = @ExtCtrlAct 1;
 
   PlantEquipmentOperationSchemes,
