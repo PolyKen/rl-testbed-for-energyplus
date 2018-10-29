@@ -15,9 +15,14 @@ EnergyManagementSystem:Sensor,
     Boiler Inlet Temperature;!- Output:Variable or Output:Meter Name
 
 EnergyManagementSystem:Sensor,
-    BoilerOutletTemperature, !- Name
-    HeatSys1 Boiler,                        !- Output:Variable or Output:Meter Index Key Name
-    Boiler Outlet Temperature;  !- Output:Variable or Output:Meter Name
+    ChillerCondenserInletTemperature, !- Name
+    CoolSys1 Chiller,                        !- Output:Variable or Output:Meter Index Key Name
+    ChillerCondenserInletTemperature;  !- Output:Variable or Output:Meter Name
+
+EnergyManagementSystem:Sensor,
+    CoolingTowerInletTemperature,
+    Whole Building,
+    Cooling Tower Inlet Temperature;
 
 ! RefBldgLargeOfficeNew2004_Chicago.idf
 !
