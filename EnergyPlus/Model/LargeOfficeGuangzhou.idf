@@ -21,7 +21,7 @@ EnergyManagementSystem:Sensor,
 
 EnergyManagementSystem:Sensor,
     ChillerPartLoadRatio,
-    Whole Building,
+    Chiller Part Load Performance,
     Chiller Part Load Ratio;
 
 ! RefBldgLargeOfficeNew2004_Chicago.idf
