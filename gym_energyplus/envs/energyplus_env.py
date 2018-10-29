@@ -27,6 +27,8 @@ class EnergyPlusEnv(Env):
                  weather_file=None,
                  log_dir=None,
                  verbose=False):
+        print('>> building EnergyPlusEnv')
+
         self.energyplus_process = None
         self.pipe_io = None
 
@@ -126,7 +128,8 @@ class EnergyPlusEnv(Env):
               + ' -d ' + output_dir \
               + ' -w ' + copy_weather_file \
               + ' ' + copy_model_file
-        print('Starting EnergyPlus with command: %s' % cmd)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        print('>> Starting EnergyPlus with command: %s' % cmd)
         self.energyplus_process = subprocess.Popen(cmd.split(' '), shell=False)
 
     def stop_instance(self):

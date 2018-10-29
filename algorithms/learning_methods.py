@@ -107,14 +107,20 @@ def default_learn(env, policy_fn, *,
     rewbuffer = deque(maxlen=40)  # rolling buffer for episode rewards
 
     assert sum([max_iters > 0, max_timesteps > 0, max_episodes > 0]) == 1
+    print('>> max iters = ', max_iters)
+    print('>> max timesteps = ', max_timesteps)
+    print('>> max episodes = ', max_episodes)
 
     while True:
         if callback: callback(locals(), globals())
         if max_timesteps and timesteps_so_far >= max_timesteps:
+            print('>> break: max timesteps ', max_timesteps)
             break
         elif max_episodes and episodes_so_far >= max_episodes:
+            print('>> break: max episodes ', max_episodes)
             break
         elif max_iters and iters_so_far >= max_iters:
+            print('>> break: max iters ', max_iters)
             break
         logger.log("********** Iteration %i ************" % iters_so_far)
 
