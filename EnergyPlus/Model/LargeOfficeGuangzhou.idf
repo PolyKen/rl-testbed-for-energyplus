@@ -24,6 +24,16 @@ EnergyManagementSystem:Sensor,
     Core_top,
     Zone Mean Air Temperature;
 
+EnergyManagementSystem:Sensor,
+    PeopleAirTemperature,
+    Whole Building,
+    People Air Temperature;
+
+EnergyManagementSystem:Sensor,
+    ChillerCondenserInletTemperature,
+    CoolSys1,
+    Chiller Condenser Inlet Temperature;
+
 ! RefBldgLargeOfficeNew2004_Chicago.idf
 !
 ! This example file is based on Version 1.3_5.0 and was transitioned to Version 6.0 using the transition utility
@@ -9125,6 +9135,8 @@ Output:Variable,*,Air System Total Heating Energy,HOURLY;
 Output:Variable,*,Air System Total Cooling Energy,HOURLY;
 Output:Variable,*,Air System Fan Electric Energy,HOURLY;
 Output:Variable,*,Zone Mean Air Temperature,hourly;
+Output:Variable,*,People Air Temperature,hourly;
+Output:Variable,*,Chiller Condenser Inlet Temperature,hourly;
 
 ! ***REPORT TABLES***
 OutputControl:Table:Style,
