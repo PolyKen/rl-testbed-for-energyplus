@@ -9,15 +9,15 @@ EnergyManagementSystem:Sensor,
     Whole Building,          !- Output:Variable or Output:Meter Index Key Name
     Site Outdoor Air Drybulb Temperature;  !- Output:Variable or Output:Meter Name
 
-EnergyManagementSystem:Sensor,
-    BoilerInletTemperature,  !- Name
-    ,                        !- Output:Variable or Output:Meter Index Key Name
-    Boiler Inlet Temperature;!- Output:Variable or Output:Meter Name
+!EnergyManagementSystem:Sensor,
+    !BoilerInletTemperature,  !- Name
+    !,                        !- Output:Variable or Output:Meter Index Key Name
+    !Boiler Inlet Temperature;!- Output:Variable or Output:Meter Name
 
-EnergyManagementSystem:Sensor,
-    BoilerOutletTemperature, !- Name
-    ,                        !- Output:Variable or Output:Meter Index Key Name
-    Boiler Outlet Temperature;  !- Output:Variable or Output:Meter Name
+!EnergyManagementSystem:Sensor,
+    !BoilerOutletTemperature, !- Name
+    !,                        !- Output:Variable or Output:Meter Index Key Name
+    !Boiler Outlet Temperature;  !- Output:Variable or Output:Meter Name
 
 ! RefBldgLargeOfficeNew2004_Chicago.idf
 !
