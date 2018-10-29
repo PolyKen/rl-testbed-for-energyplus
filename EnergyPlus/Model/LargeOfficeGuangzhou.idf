@@ -26,12 +26,12 @@ EnergyManagementSystem:Sensor,
 
 EnergyManagementSystem:Sensor,
     PeopleAirTemperature,
-    Whole Building,
+    Core_mid people,
     People Air Temperature;
 
 EnergyManagementSystem:Sensor,
     ChillerCondenserInletTemperature,
-    CoolSys1,
+    CoolSys1 Chiller Water Inlet Node 1,
     Chiller Condenser Inlet Temperature;
 
 ! RefBldgLargeOfficeNew2004_Chicago.idf
