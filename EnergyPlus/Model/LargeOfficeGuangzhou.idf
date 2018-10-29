@@ -20,9 +20,9 @@ EnergyManagementSystem:Sensor,
     Site Outdoor Air Relative Humidity;
 
 EnergyManagementSystem:Sensor,
-    ChillerPartLoadRatio,
-    Chiller Part Load Performance,
-    Chiller Part Load Ratio;
+    ZoneMeanAirTemperature,
+    Core_top,
+    Zone Mean Air Temperature;
 
 ! RefBldgLargeOfficeNew2004_Chicago.idf
 !
