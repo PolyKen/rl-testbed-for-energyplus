@@ -9322,8 +9322,8 @@ Output:EnergyManagementSystem,
 
 EnergyManagementSystem:Sensor,
     TestSensor,              !- Name
-    VAV_1 Supply Equipment Outlet Node,  !- Output:Variable or Output:Meter Index Key Name
-    Supply Equipment Outlet Node;  !- Output:Variable or Output:Meter Name
+    *,  !- Output:Variable or Output:Meter Index Key Name
+    Zone Mean Air Temperature;  !- Output:Variable or Output:Meter Name
 
 EnergyManagementSystem:Actuator,
     TestActuator,            !- Name
