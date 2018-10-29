@@ -85,7 +85,7 @@ class EnergyPlusModelTest(EnergyPlusModel):
         if raw_state is not None:
             self.raw_state = raw_state
         else:
-            self.raw_state = [0.0]
+            self.raw_state = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
 
     def compute_reward(self):
         rew, _ = self._compute_reward()
