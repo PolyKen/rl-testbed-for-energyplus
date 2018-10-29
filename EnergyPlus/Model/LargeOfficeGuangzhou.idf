@@ -15,14 +15,14 @@ EnergyManagementSystem:Sensor,
     Boiler Inlet Temperature;!- Output:Variable or Output:Meter Name
 
 EnergyManagementSystem:Sensor,
-    ChillerCondenserInletTemperature, !- Name
-    CoolSys1 Chiller,                        !- Output:Variable or Output:Meter Index Key Name
-    Chiller Condenser Inlet Temperature;  !- Output:Variable or Output:Meter Name
+    SiteOutdoorAirRelativeHumidity,
+    Whole Building,
+    Site Outdoor Air Relative Humidity;
 
 EnergyManagementSystem:Sensor,
-    CoolingTowerInletTemperature,
-    HVAC,
-    Cooling Tower Inlet Temperature;
+    ChillerPartLoadRatio,
+    CoolSys1 Chiller,
+    Chiller Part Load Ratio;
 
 ! RefBldgLargeOfficeNew2004_Chicago.idf
 !
