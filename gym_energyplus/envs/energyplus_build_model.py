@@ -9,6 +9,7 @@ from gym_energyplus.envs.energyplus_model_2ZoneDataCenterHVAC_wEconomizer_Temp i
     EnergyPlusModel2ZoneDataCenterHVAC_wEconomizer_Temp
 from gym_energyplus.envs.energyplus_model_2ZoneDataCenterHVAC_wEconomizer_Temp_Fan import \
     EnergyPlusModel2ZoneDataCenterHVAC_wEconomizer_Temp_Fan
+from gym_energyplus.envs.energyplus_model_test import EnergyPlusModelTest
 
 
 def build_ep_model(model_file, log_dir, verbose=False):
@@ -29,6 +30,8 @@ def build_ep_model(model_file, log_dir, verbose=False):
     elif match('LargeOfficeGuangzhou.*', model_basename):
         model = EnergyPlusModel2ZoneDataCenterHVAC_wEconomizer_Temp(model_file=model_file, log_dir=log_dir,
                                                                     verbose=verbose)
+    elif match('Text.*', model_basename):
+        model = EnergyPlusModelTest(model_file=model_file, log_dir=log_dir, verbose=verbose)
     else:
         raise ValueError('Unsupported EnergyPlus model')
     return model
