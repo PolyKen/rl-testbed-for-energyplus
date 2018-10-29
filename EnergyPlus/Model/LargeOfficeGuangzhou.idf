@@ -9352,13 +9352,17 @@ EnergyManagementSystem:Program,
 ! Name
 EnergyManagementSystem:Program,
     ExtCtrlBasedSetpointManager,  !- Name
-    SET temp_var = @ExtCtrlObs 1 TestSensor,  !- Program Line 1
-    SET temp_var = @ExtCtrlObs 2 TestSensor,  !- Program Line 2
-    SET temp_var = @ExtCtrlObs 3 TestSensor,  !- A4
-    SET temp_var = @ExtCtrlObs 4 TestSensor,  !- A5
-    SET temp_var = @ExtCtrlObs 5 TestSensor,  !- A6
-    SET temp_var = @ExtCtrlObs 6 TestSensor,  !- A7
-    SET temp_var = @ExtCtrlObs 7 TestSensor,  !- A8
-    SET temp_var = @ExtCtrlAct 0 7,  !- A9
-    SET TestActuator = @ExtCtrlAct 1;  !- A10
+    IF WarmupFlag == 0.0,
+        SET temp_var = @ExtCtrlObs 1 TestSensor,  !- Program Line 1
+        SET temp_var = @ExtCtrlObs 2 TestSensor,  !- Program Line 2
+        SET temp_var = @ExtCtrlObs 3 TestSensor,  !- A4
+        SET temp_var = @ExtCtrlObs 4 TestSensor,  !- A5
+        SET temp_var = @ExtCtrlObs 5 TestSensor,  !- A6
+        SET temp_var = @ExtCtrlObs 6 TestSensor,  !- A7
+        SET temp_var = @ExtCtrlObs 7 TestSensor,  !- A8
+        SET temp_var = @ExtCtrlAct 0 7,  !- A9
+        SET TestActuator = @ExtCtrlAct 1,  !- A10
+    ELSE,
+        SET TestActuator = 10,
+    ENDIF;
 
