@@ -30,7 +30,7 @@ def build_ep_model(model_file, log_dir, verbose=False):
     elif match('LargeOfficeGuangzhou.*', model_basename):
         model = EnergyPlusModel2ZoneDataCenterHVAC_wEconomizer_Temp(model_file=model_file, log_dir=log_dir,
                                                                     verbose=verbose)
-    elif match('Text.*', model_basename):
+    elif match('Test.*', model_basename):
         model = EnergyPlusModelTest(model_file=model_file, log_dir=log_dir, verbose=verbose)
     else:
         raise ValueError('Unsupported EnergyPlus model')
