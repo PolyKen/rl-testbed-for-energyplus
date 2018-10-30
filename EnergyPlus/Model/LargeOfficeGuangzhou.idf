@@ -31,7 +31,7 @@ EnergyManagementSystem:Sensor,
 
 EnergyManagementSystem:Sensor,
     ChillerCondenserInletTemperature,
-    CoolSys1 Chiller Water Inlet Node 1,
+    CoolSys1 Chiller,
     Chiller Condenser Inlet Temperature;
 
 ! RefBldgLargeOfficeNew2004_Chicago.idf
