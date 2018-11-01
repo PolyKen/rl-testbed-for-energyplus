@@ -77,7 +77,7 @@ def default_learn(env, policy_fn, *,
             print(colorize(msg, color='magenta'))
             tstart = time.time()
             yield
-            print(colorize("done in %.3f seconds" % (time.time() - tstart), color='magenta'))
+            print(colorize(">> done in %.3f seconds" % (time.time() - tstart), color='magenta'))
         else:
             yield
 
@@ -124,9 +124,8 @@ def default_learn(env, policy_fn, *,
             break
         logger.log("********** Iteration %i ************" % iters_so_far)
 
-        with timed("sampling"):
+        with timed(">> sampling"):
             seg = seg_gen.__next__()
-            print(colorize('>> Sampling done', color='blue'))
         add_vtarg_and_adv(seg, gamma, lam)
 
         # ob, ac, atarg, ret, td1ret = map(np.concatenate, (obs, acs, atargs, rets, td1rets))
@@ -144,8 +143,7 @@ def default_learn(env, policy_fn, *,
             return allmean(compute_fvp(p, *fvpargs)) + cg_damping * p
 
         assign_old_eq_new()  # set old parameter values to new parameter values
-        print(colorize('>> Computing gradient', color='blue'))
-        with timed("computegrad"):
+        with timed(">> computegrad"):
             *lossbefore, g = compute_lossandgrad(*args)
         lossbefore = allmean(np.array(lossbefore))
         g = allmean(g)
