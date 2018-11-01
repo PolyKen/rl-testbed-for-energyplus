@@ -209,7 +209,9 @@ class EnergyPlusEnv(Env):
         self.ep_model.set_raw_state(raw_state)
         observation = self.ep_model.get_state()
         reward = self.ep_model.compute_reward()
-
+        print(colorize('Summary for this step:\n', color='yellow'))
+        print(colorize('obs:' + str(observation), color='yellow'))
+        print(colorize('reward:' + str(reward), color='yellow'))
         if done:
             print('>> EnergyPlusEnv: (done)\n')
         return observation, reward, done, {}
