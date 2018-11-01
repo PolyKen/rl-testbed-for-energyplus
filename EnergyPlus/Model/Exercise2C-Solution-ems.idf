@@ -65,7 +65,7 @@ EnergyManagementSystem:Program,
 	SET ActuatorTemperature = @ExtCtrlAct 1,
 	SET ActuatorHumidity = @ExtCtrlAct 2,
 	ELSE,
-	SET ActuatorTemperature = 20,
+	SET ActuatorTemperature = 10,
 	SET ActuatorHumidity = 80,
     ENDIF;
 
