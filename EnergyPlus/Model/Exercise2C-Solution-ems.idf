@@ -67,7 +67,7 @@ EnergyManagementSystem:Program,
     ELSE,                    !- A13
     SET ActuatorTemperature = 20,  !- A14
     SET ActuatorHumidity = 80,  !- A15
-	ENDIF;
+    ENDIF;                   !- A16
 
 Output:EnergyManagementSystem,
     Verbose,                 !- Actuator Availability Dictionary Reporting
@@ -110,7 +110,7 @@ HVACTemplate:System:VAV,
     None,                    !- Heating Coil Type
     ,                        !- Heating Coil Availability Schedule Name
     ,                        !- Heating Coil Setpoint Schedule Name
-    10.0,                    !- Heating Coil Design Setpoint {C}
+    7.2,                     !- Heating Coil Design Setpoint {C}
     0.8,                     !- Gas Heating Coil Efficiency
     ,                        !- Gas Heating Coil Parasitic Electric Load {W}
     Electric,                !- Preheat Coil Type
