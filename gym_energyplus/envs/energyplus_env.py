@@ -130,7 +130,7 @@ class EnergyPlusEnv(Env):
               + ' -w ' + copy_weather_file \
               + ' ' + copy_model_file
         print('')
-        print(colorize('>> Starting EnergyPlus with command:', color='blue'), '%s' % cmd)
+        print(colorize('>> Starting EnergyPlus with command: ' + cmd, color='blue'))
         print('')
         self.energyplus_process = subprocess.Popen(cmd.split(' '), shell=False)
 
