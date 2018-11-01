@@ -37,6 +37,7 @@ def build_ep_model(model_file, log_dir, verbose=False):
         model = EnergyPlusModel2ZoneDataCenterHVAC_wEconomizer_Temp(model_file=model_file, log_dir=log_dir, verbose=verbose)
     
     else:
+        print('model basename = ' + model_basename)
         raise ValueError('Unsupported EnergyPlus model')
-        
+
     return model
