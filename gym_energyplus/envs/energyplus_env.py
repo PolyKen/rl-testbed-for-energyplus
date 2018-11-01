@@ -16,6 +16,7 @@ from argparse import ArgumentParser
 from gym_energyplus.envs.pipe_io import PipeIo
 from gym_energyplus.envs.energyplus_model import EnergyPlusModel
 from gym_energyplus.envs.energyplus_build_model import build_ep_model
+from baselines.common.console_util import colorize
 
 
 class EnergyPlusEnv(Env):
