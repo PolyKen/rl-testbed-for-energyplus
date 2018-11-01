@@ -143,6 +143,7 @@ def default_learn(env, policy_fn, *,
             return allmean(compute_fvp(p, *fvpargs)) + cg_damping * p
 
         assign_old_eq_new()  # set old parameter values to new parameter values
+        print('>> Computing gradient')
         with timed("computegrad"):
             *lossbefore, g = compute_lossandgrad(*args)
         lossbefore = allmean(np.array(lossbefore))
