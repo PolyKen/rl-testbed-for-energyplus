@@ -92,7 +92,7 @@ class EnergyPlusEnv(Env):
         return self.step(None)[0]
 
     def start_instance(self):
-        print('Starting new environment')
+        print('>> Starting new environment')
         assert (self.energyplus_process is None)
 
         output_dir = self.log_dir + '/output/episode-{:08}'.format(self.episode_idx)
@@ -128,8 +128,9 @@ class EnergyPlusEnv(Env):
               + ' -d ' + output_dir \
               + ' -w ' + copy_weather_file \
               + ' ' + copy_model_file
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        print('')
         print('>> Starting EnergyPlus with command: %s' % cmd)
+        print('')
         self.energyplus_process = subprocess.Popen(cmd.split(' '), shell=False)
 
     def stop_instance(self):
@@ -192,11 +193,11 @@ class EnergyPlusEnv(Env):
             self.ep_model.set_action(action)
 
             if not self.send_action():
-                print('EnergyPlusEnv.step(): Failed to send an action. Quitting.')
+                print('>> EnergyPlusEnv.step(): Failed to send an action. Quitting.\n')
                 observation = (self.observation_space.low + self.observation_space.high) * 0.5
                 reward = 0.0
                 done = True
-                print('EnergyPlusEnv: (quit)')
+                print('>> EnergyPlusEnv: (quit)\n')
                 return observation, reward, done, {}
 
         # Receive observation from the environment    
@@ -209,7 +210,7 @@ class EnergyPlusEnv(Env):
         reward = self.ep_model.compute_reward()
 
         if done:
-            print('EnergyPlusEnv: (done)')
+            print('>> EnergyPlusEnv: (done)\n')
         return observation, reward, done, {}
 
     def send_action(self):
