@@ -66,7 +66,8 @@ EnergyManagementSystem:Program,
     SET ActuatorHumidity = @ExtCtrlAct 2,  !- A12
     ELSE,                    !- A13
     SET ActuatorTemperature = 20,  !- A14
-    SET ActuatorHumidity = 80;  !- A15
+    SET ActuatorHumidity = 80,  !- A15
+	ENDIF;
 
 Output:EnergyManagementSystem,
     Verbose,                 !- Actuator Availability Dictionary Reporting
