@@ -33,7 +33,8 @@ export ENERGYPLUS_LOGBASE="${HOME}/eplog"
 #export ENERGYPLUS_MODEL="${MODEL_DIR}/RefBldgLargeOfficeNew2004_Chicago_ver_2.idf"
 #export ENERGYPLUS_MODEL="${MODEL_DIR}/2ZoneDataCenterHVAC_wEconomizer-baseline-test.idf"
 #export ENERGYPLUS_MODEL="${MODEL_DIR}/LargeOfficeGuangzhou.idf"
-export ENERGYPLUS_MODEL="${MODEL_DIR}/Test.idf"
+export ENERGYPLUS_MODEL="${MODEL_DIR}/Exercise2C-Solution-ems.idf"
+#export ENERGYPLUS_MODEL="${MODEL_DIR}/Test.idf"
 
 # Run command (example)
 # $ time python3 -m baselines_energyplus.trpo_mpi.run_energyplus --num-timesteps 1000000000
