@@ -126,6 +126,7 @@ def default_learn(env, policy_fn, *,
 
         with timed("sampling"):
             seg = seg_gen.__next__()
+            print(colorize('>> Sampling done', color='blue'))
         add_vtarg_and_adv(seg, gamma, lam)
 
         # ob, ac, atarg, ret, td1ret = map(np.concatenate, (obs, acs, atargs, rets, td1rets))
@@ -143,7 +144,7 @@ def default_learn(env, policy_fn, *,
             return allmean(compute_fvp(p, *fvpargs)) + cg_damping * p
 
         assign_old_eq_new()  # set old parameter values to new parameter values
-        print('>> Computing gradient')
+        print(colorize('>> Computing gradient', color='blue'))
         with timed("computegrad"):
             *lossbefore, g = compute_lossandgrad(*args)
         lossbefore = allmean(np.array(lossbefore))
