@@ -36,38 +36,37 @@ EnergyManagementSystem:Sensor,
     SensorDemandPower,       !- Name
     Whole Building,          !- Output:Variable or Output:Meter Index Key Name
     Facility Total HVAC Electric Demand Power ;  !- Output:Variable or Output:Meter Name
-	
+
 EnergyManagementSystem:ProgramCallingManager,
-    InitPCM,                     !- Name
-    AfterPredictorAfterHVACManagers,         !- EnergyPlus Model Calling Point
-    InitTempSetpoint;                 !- Program Name 1
+    InitPCM,                 !- Name
+    AfterPredictorAfterHVACManagers,  !- EnergyPlus Model Calling Point
+    InitTempSetpoint;        !- Program Name 1
 
 EnergyManagementSystem:ProgramCallingManager,
     PCM,                     !- Name
     EndOfZoneSizing,         !- EnergyPlus Model Calling Point
     TempSetpoint;            !- Program Name 1
-	
-EnergyManagementSystem:Program,
-	InitTempSetpoint,
-	SET tmp_val1 = @ExtCtrlObs 0;
 
 EnergyManagementSystem:Program,
-    TempSetpoint,
-	IF WarmupFlag == 0.0,
-	SET tmp_val1 = @ExtCtrlObs 1 SensorSiteOutdoorAirDrybulbTemperature,
-	SET tmp_val1 = @ExtCtrlObs 2 SensorSiteOutdoorAirDrybulbTemperature,
-	SET tmp_val1 = @ExtCtrlObs 3 SensorSiteOutdoorAirDrybulbTemperature,
-	SET tmp_val1 = @ExtCtrlObs 4 1,
-	SET tmp_val1 = @ExtCtrlObs 5 SensorDemandPower,
-	SET tmp_val1 = @ExtCtrlObs 6 SensorDemandPower,
-	SET tmp_val1 = @ExtCtrlObs 7 SensorDemandPower,
-	SET tmp_val1 = @ExtCtrlAct 0 7,
-	SET ActuatorTemperature = @ExtCtrlAct 1,
-	SET ActuatorHumidity = @ExtCtrlAct 2,
-	ELSE,
-	SET ActuatorTemperature = 10,
-	SET ActuatorHumidity = 80,
-    ENDIF;
+    InitTempSetpoint,        !- Name
+    SET tmp_val1 = @ExtCtrlObs 0;  !- Program Line 1
+
+EnergyManagementSystem:Program,
+    TempSetpoint,            !- Name
+    IF WarmupFlag == 0.0,    !- Program Line 1
+    SET tmp_val1 = @ExtCtrlObs 1 SensorSiteOutdoorAirDrybulbTemperature,  !- Program Line 2
+    SET tmp_val1 = @ExtCtrlObs 2 SensorSiteOutdoorAirDrybulbTemperature,  !- A4
+    SET tmp_val1 = @ExtCtrlObs 3 SensorSiteOutdoorAirDrybulbTemperature,  !- A5
+    SET tmp_val1 = @ExtCtrlObs 4 1,  !- A6
+    SET tmp_val1 = @ExtCtrlObs 5 SensorDemandPower,  !- A7
+    SET tmp_val1 = @ExtCtrlObs 6 SensorDemandPower,  !- A8
+    SET tmp_val1 = @ExtCtrlObs 7 SensorDemandPower,  !- A9
+    SET tmp_val1 = @ExtCtrlAct 0 7,  !- A10
+    SET ActuatorTemperature = @ExtCtrlAct 1,  !- A11
+    SET ActuatorHumidity = @ExtCtrlAct 2,  !- A12
+    ELSE,                    !- A13
+    SET ActuatorTemperature = 20,  !- A14
+    SET ActuatorHumidity = 80;  !- A15
 
 Output:EnergyManagementSystem,
     Verbose,                 !- Actuator Availability Dictionary Reporting
@@ -113,8 +112,8 @@ HVACTemplate:System:VAV,
     10.0,                    !- Heating Coil Design Setpoint {C}
     0.8,                     !- Gas Heating Coil Efficiency
     ,                        !- Gas Heating Coil Parasitic Electric Load {W}
-    None,                    !- Preheat Coil Type
-    ,                        !- Preheat Coil Availability Schedule Name
+    Electric,                !- Preheat Coil Type
+    Constant,                !- Preheat Coil Availability Schedule Name
     ,                        !- Preheat Coil Setpoint Schedule Name
     7.2,                     !- Preheat Coil Design Setpoint {C}
     0.8,                     !- Gas Preheat Coil Efficiency
@@ -535,7 +534,7 @@ Site:Location,
     -6.00,                   !- Time Zone {hr}
     190.00;                  !- Elevation {m}
 
-! CHICAGO_IL_USA Heating 99%, MaxDB= -18.10ï¿½C
+! CHICAGO_IL_USA Heating 99%, MaxDB= -18.10°C
 SizingPeriod:DesignDay,
     CHICAGO_IL_USA Heating 99% Conditions,  !- Name
     1,                       !- Month
@@ -564,7 +563,7 @@ SizingPeriod:DesignDay,
     ,                        !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
     0.00;                    !- Sky Clearness
 
-! CHICAGO_IL_USA Cooling (DB=>MWB) 1%, MaxDB=  31.30ï¿½C MWB=  22.80ï¿½C
+! CHICAGO_IL_USA Cooling (DB=>MWB) 1%, MaxDB=  31.30°C MWB=  22.80°C
 SizingPeriod:DesignDay,
     CHICAGO_IL_USA Cooling 1% Conditions DB=>MWB,  !- Name
     7,                       !- Month
