@@ -53,6 +53,14 @@ EnergyManagementSystem:Sensor,
     CORE,                    !- Output:Variable or Output:Meter Index Key Name
     Zone Mean Air Temperature;  !- Output:Variable or Output:Meter Name
 
+ZoneHVAC:EquipmentConnections,
+    CORE,                    !- Zone Name
+    Core Zone Equipment List,!- Zone Conditioning Equipment List Name
+    Core Zone Inlets,        !- Zone Air Inlet Node or NodeList Name
+    ,                        !- Zone Air Exhaust Node or NodeList Name
+    Core Zone Air Node,      !- Zone Air Node Name
+    Core Zone Return Node;   !- Zone Return Air Node or NodeList Name
+
 Site:GroundTemperature:Shallow,20.03,20.03,20.13,20.30,20.43,20.52,20.62,20.77,20.78,20.55,20.44,20.20;
 Site:GroundTemperature:Deep,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1;
 
@@ -1459,7 +1467,7 @@ HVACTemplate:Zone:VAV,
     ;                        !- Zone Heating Design Supply Air Temperature Difference {deltaC}
 
 HVACTemplate:Zone:VAV,
-    CORE,                    !- Zone Name
+    PLENUM,                  !- Zone Name
     VAV with Reheat,         !- Template VAV System Name
     Office Thermostat,       !- Template Thermostat Name
     autosize,                !- Supply Air Maximum Flow Rate {m3/s}
