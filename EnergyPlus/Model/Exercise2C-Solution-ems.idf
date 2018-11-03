@@ -108,14 +108,6 @@ ZoneHVAC:EquipmentList,
     1,                       !- Zone Equipment 1 Cooling Sequence
     1;                       !- Zone Equipment 1 Heating or No-Load Sequence
 
-ZoneHVAC:EquipmentConnections,
-    PLENUM,                  !- Zone Name
-    Core Zone Equipment List,!- Zone Conditioning Equipment List Name
-    Core Zone Inlets,        !- Zone Air Inlet Node or NodeList Name
-    ,                        !- Zone Air Exhaust Node or NodeList Name
-    Core Zone Air Node,      !- Zone Air Node Name
-    Core Zone Return Node;   !- Zone Return Air Node or NodeList Name
-
 Fan:VariableVolume,
     Core Zone Supply Fan,    !- Name
     FanAndCoilAvailSched,    !- Availability Schedule Name
