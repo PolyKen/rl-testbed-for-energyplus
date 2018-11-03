@@ -109,7 +109,7 @@ ZoneHVAC:EquipmentList,
     1;                       !- Zone Equipment 1 Heating or No-Load Sequence
 
 ZoneHVAC:EquipmentConnections,
-    CORE,                    !- Zone Name
+    PLENUM,                  !- Zone Name
     Core Zone Equipment List,!- Zone Conditioning Equipment List Name
     Core Zone Inlets,        !- Zone Air Inlet Node or NodeList Name
     ,                        !- Zone Air Exhaust Node or NodeList Name
