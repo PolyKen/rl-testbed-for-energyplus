@@ -4,6 +4,1167 @@
 !-NOTE: All comments with '!-' are ignored by the IDFEditor and are generated automatically.
 !-      Use '!' comments if they need to be retained when using the IDFEditor.
 
+Site:GroundTemperature:Shallow,20.03,20.03,20.13,20.30,20.43,20.52,20.62,20.77,20.78,20.55,20.44,20.20;
+Site:GroundTemperature:Deep,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1;
+
+ZoneControl:Thermostat,
+    Core Zone Thermostat,    !- Name
+    CORE,                    !- Zone or ZoneList Name
+    Zone Control Type Sched, !- Control Type Schedule Name
+    ThermostatSetpoint:DualSetpoint,  !- Control 1 Object Type
+    Temperature Setpoints;   !- Control 1 Name
+
+ThermostatSetpoint:DualSetpoint,
+    Temperature Setpoints,   !- Name
+    Heating Setpoints,       !- Heating Setpoint Temperature Schedule Name
+    Cooling Setpoints;       !- Cooling Setpoint Temperature Schedule Name
+
+Schedule:Compact,
+    Zone Control Type Sched, !- Name
+    Control Type,            !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, 4;         !- Field 4
+
+AirTerminal:SingleDuct:VAV:NoReheat,
+    Core Zone VAV System,    !- Name
+    FanAndCoilAvailSched,    !- Availability Schedule Name
+    Core Zone Inlet Node,    !- Air Outlet Node Name
+    Core Zone ATU Inlet Node,!- Air Inlet Node Name
+    autosize,                !- Maximum Air Flow Rate {m3/s}
+    Constant,                !- Zone Minimum Air Flow Input Method
+    0.40;                    !- Constant Minimum Air Flow Fraction
+
+Schedule:Compact,
+    FanAndCoilAvailSched,    !- Name
+    Fraction,                !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, 1.0;       !- Field 4
+
+NodeList,
+    Core Zone Inlets,        !- Name
+    Core Zone Inlet Node;    !- Node 1 Name
+
+ZoneHVAC:AirDistributionUnit,
+    Core Zone ATU,           !- Name
+    Core Zone Inlet Node,    !- Air Distribution Unit Outlet Node Name
+    AirTerminal:SingleDuct:VAV:NoReheat,  !- Air Terminal Object Type
+    Core Zone VAV System;    !- Air Terminal Name
+
+ZoneHVAC:EquipmentList,
+    Core Zone Equipment List,!- Name
+    ZoneHVAC:AirDistributionUnit,  !- Zone Equipment 1 Object Type
+    Core Zone ATU,           !- Zone Equipment 1 Name
+    1,                       !- Zone Equipment 1 Cooling Sequence
+    1;                       !- Zone Equipment 1 Heating or No-Load Sequence
+
+ZoneHVAC:EquipmentConnections,
+    CORE,                    !- Zone Name
+    Core Zone Equipment List,!- Zone Conditioning Equipment List Name
+    Core Zone Inlets,        !- Zone Air Inlet Node or NodeList Name
+    ,                        !- Zone Air Exhaust Node or NodeList Name
+    Core Zone Air Node,      !- Zone Air Node Name
+    Core Zone Return Node;   !- Zone Return Air Node or NodeList Name
+
+Fan:VariableVolume,
+    Core Zone Supply Fan,    !- Name
+    FanAndCoilAvailSched,    !- Availability Schedule Name
+    0.7,                     !- Fan Total Efficiency
+    300.0,                   !- Pressure Rise {Pa}
+    autosize,                !- Maximum Flow Rate {m3/s}
+    Fraction,                !- Fan Power Minimum Flow Rate Input Method
+    0.25,                    !- Fan Power Minimum Flow Fraction
+    ,                        !- Fan Power Minimum Air Flow Rate {m3/s}
+    0.9,                     !- Motor Efficiency
+    0.0,                     !- Motor In Airstream Fraction
+    0.35071223,              !- Fan Power Coefficient 1
+    0.30850535,              !- Fan Power Coefficient 2
+    -0.54137364,             !- Fan Power Coefficient 3
+    0.87198823,              !- Fan Power Coefficient 4
+    0.000,                   !- Fan Power Coefficient 5
+    Core Zone Mixed Air Node,!- Air Inlet Node Name
+    Core Zone Supply Fan Outlet Node;  !- Air Outlet Node Name
+
+Coil:Cooling:Water,
+    Core Zone CW Cooling Coil,  !- Name
+    CoreChWaterCoilAvailSched,  !- Availability Schedule Name
+    autosize,                !- Design Water Flow Rate {m3/s}
+    autosize,                !- Design Air Flow Rate {m3/s}
+    autosize,                !- Design Inlet Water Temperature {C}
+    autosize,                !- Design Inlet Air Temperature {C}
+    autosize,                !- Design Outlet Air Temperature {C}
+    autosize,                !- Design Inlet Air Humidity Ratio {kgWater/kgDryAir}
+    autosize,                !- Design Outlet Air Humidity Ratio {kgWater/kgDryAir}
+    Core CWCoil Water Inlet Node,  !- Water Inlet Node Name
+    Core CWCoil Water Outlet Node,  !- Water Outlet Node Name
+    Core Zone CCoil Air Outlet Node,  !- Air Inlet Node Name
+    Core Air Loop Outlet Node,  !- Air Outlet Node Name
+    SimpleAnalysis,          !- Type of Analysis
+    CrossFlow;               !- Heat Exchanger Configuration
+
+Schedule:Compact,
+    CoreChWaterCoilAvailSched,  !- Name
+    Fraction,                !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, 0.0;       !- Field 4
+
+Branch,
+    Core Zone Air Loop Main Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    AirLoopHVAC:OutdoorAirSystem,  !- Component 1 Object Type
+    Core Zone OA System,     !- Component 1 Name
+    Core Zone Return Air Node,  !- Component 1 Inlet Node Name
+    Core Zone Mixed Air Node,!- Component 1 Outlet Node Name
+    Fan:VariableVolume,      !- Component 2 Object Type
+    Core Zone Supply Fan,    !- Component 2 Name
+    Core Zone Mixed Air Node,!- Component 2 Inlet Node Name
+    Core Zone Supply Fan Outlet Node,  !- Component 2 Outlet Node Name
+    EvaporativeCooler:Direct:ResearchSpecial,  !- Component 3 Object Type
+    Core DEC,                !- Component 3 Name
+    Core Zone Supply Fan Outlet Node,  !- Component 3 Inlet Node Name
+    Core Zone DEC Outlet Node,  !- Component 3 Outlet Node Name
+    EvaporativeCooler:Indirect:ResearchSpecial,  !- Component 4 Object Type
+    Core IEC,                !- Component 4 Name
+    Core Zone DEC Outlet Node,  !- Component 4 Inlet Node Name
+    Core Zone IEC Outlet Node,  !- Component 4 Outlet Node Name
+    CoilSystem:Cooling:DX,   !- Component 5 Object Type
+    Core Zone DX Cooling Coil,  !- Component 5 Name
+    Core Zone IEC Outlet Node,  !- Component 5 Inlet Node Name
+    Core Zone CCoil Air Outlet Node,  !- Component 5 Outlet Node Name
+    Coil:Cooling:Water,      !- Component 6 Object Type
+    Core Zone CW Cooling Coil,  !- Component 6 Name
+    Core Zone CCoil Air Outlet Node,  !- Component 6 Inlet Node Name
+    Core Air Loop Outlet Node;  !- Component 6 Outlet Node Name
+
+Branch,
+    CW Supply Pump Branch,   !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pump:VariableSpeed,      !- Component 1 Object Type
+    CW Circ Pump,            !- Component 1 Name
+    CW Supply Inlet Node,    !- Component 1 Inlet Node Name
+    CW Pump Outlet Node;     !- Component 1 Outlet Node Name
+
+Branch,
+    CW Supply Chiller Branch,!- Name
+    ,                        !- Pressure Drop Curve Name
+    Chiller:Electric,        !- Component 1 Object Type
+    Chiller,                 !- Component 1 Name
+    Chiller Inlet Node,      !- Component 1 Inlet Node Name
+    Chiller Outlet Node;     !- Component 1 Outlet Node Name
+
+Branch,
+    CW Supply Bypass Branch, !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    CW Supply Side Bypass Pipe,  !- Component 1 Name
+    CW Supply Bypass Inlet Node,  !- Component 1 Inlet Node Name
+    CW Supply Bypass Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    CW Supply Outlet Branch, !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    CW Supply Side Outlet Pipe,  !- Component 1 Name
+    CW Supply Side Exit Pipe Inlet Node,  !- Component 1 Inlet Node Name
+    CW Supply Outlet Node;   !- Component 1 Outlet Node Name
+
+Branch,
+    CW Demand Inlet Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    CW Demand Side Inlet Pipe,  !- Component 1 Name
+    CW Demand Inlet Node,    !- Component 1 Inlet Node Name
+    CW Demand Entrance Pipe Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    Core CW Cooling Coil Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Coil:Cooling:Water,      !- Component 1 Object Type
+    Core Zone CW Cooling Coil,  !- Component 1 Name
+    Core CWCoil Water Inlet Node,  !- Component 1 Inlet Node Name
+    Core CWCoil Water Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    CW Demand Bypass Branch, !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    CW Demand Side Bypass Pipe,  !- Component 1 Name
+    CW Demand Bypass Inlet Node,  !- Component 1 Inlet Node Name
+    CW Demand Bypass Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    CW Demand Outlet Branch, !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    CW Demand Side Outlet Pipe,  !- Component 1 Name
+    CW Demand Exit Pipe Inlet Node,  !- Component 1 Inlet Node Name
+    CW Demand Outlet Node;   !- Component 1 Outlet Node Name
+
+Branch,
+    Condenser Supply Pump Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pump:VariableSpeed,      !- Component 1 Object Type
+    Cond Circ Pump,          !- Component 1 Name
+    Condenser Supply Inlet Node,  !- Component 1 Inlet Node Name
+    Condenser Pump Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    Condenser Supply Tower Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    CoolingTower:VariableSpeed,  !- Component 1 Object Type
+    Cooling Tower,           !- Component 1 Name
+    Condenser Tower Inlet Node,  !- Component 1 Inlet Node Name
+    Condenser Tower Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    Condenser Supply Bypass Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    Condenser Supply Bypass Pipe,  !- Component 1 Name
+    Cond Supply Bypass Inlet Node,  !- Component 1 Inlet Node Name
+    Cond Supply Bypass Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    Condenser Supply Outlet Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    Condenser Supply Outlet Pipe,  !- Component 1 Name
+    Condenser Supply Exit Pipe Inlet Node,  !- Component 1 Inlet Node Name
+    Condenser Supply Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    Condenser Demand Inlet Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    Condenser Demand Inlet Pipe,  !- Component 1 Name
+    Condenser Demand Inlet Node,  !- Component 1 Inlet Node Name
+    Condenser Demand Entrance Pipe Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    Condenser Demand Chiller Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Chiller:Electric,        !- Component 1 Object Type
+    Chiller,                 !- Component 1 Name
+    Chiller Condenser Inlet Node,  !- Component 1 Inlet Node Name
+    Chiller Condenser Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    Condenser Demand Bypass Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    Condenser Demand Bypass Pipe,  !- Component 1 Name
+    Cond Demand Bypass Inlet Node,  !- Component 1 Inlet Node Name
+    Cond Demand Bypass Outlet Node;  !- Component 1 Outlet Node Name
+
+Branch,
+    Condenser Demand Outlet Branch,  !- Name
+    ,                        !- Pressure Drop Curve Name
+    Pipe:Adiabatic,          !- Component 1 Object Type
+    Condenser Demand Outlet Pipe,  !- Component 1 Name
+    Condenser Demand Exit Pipe Inlet Node,  !- Component 1 Inlet Node Name
+    Condenser Demand Outlet Node;  !- Component 1 Outlet Node Name
+
+AirLoopHVAC:OutdoorAirSystem,
+    Core Zone OA System,     !- Name
+    Core OA Controllers,     !- Controller List Name
+    Core OA Equipment,       !- Outdoor Air Equipment List Name
+    Core Avail List;         !- Availability Manager List Name
+
+AirLoopHVAC:ControllerList,
+    Core OA Controllers,     !- Name
+    Controller:OutdoorAir,   !- Controller 1 Object Type
+    Core OA Controller;      !- Controller 1 Name
+
+Controller:OutdoorAir,
+    Core OA Controller,      !- Name
+    Core Relief Air Outlet Node,  !- Relief Air Outlet Node Name
+    Core Zone Return Air Node,  !- Return Air Node Name
+    Core Zone Mixed Air Node,!- Mixed Air Node Name
+    Core Outside Air Inlet Node,  !- Actuator Node Name
+    autosize,                !- Minimum Outdoor Air Flow Rate {m3/s}
+    autosize,                !- Maximum Outdoor Air Flow Rate {m3/s}
+    FixedDryBulb,            !- Economizer Control Type
+    ,                        !- Economizer Control Action Type
+    23.0,                    !- Economizer Maximum Limit Dry-Bulb Temperature {C}
+    ,                        !- Economizer Maximum Limit Enthalpy {J/kg}
+    13.5,                    !- Economizer Maximum Limit Dewpoint Temperature {C}
+    ,                        !- Electronic Enthalpy Limit Curve Name
+    -20.0,                   !- Economizer Minimum Limit Dry-Bulb Temperature {C}
+    NoLockout,               !- Lockout Type
+    FixedMinimum,            !- Minimum Limit Type
+    OAFractionSched;         !- Minimum Outdoor Air Schedule Name
+
+Schedule:Compact,
+    OAFractionSched,         !- Name
+    Fraction,                !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 7:00, 0.05,       !- Field 4
+    Until: 18:00, 1.0,       !- Field 6
+    Until: 24:00, 0.05;      !- Field 8
+
+Coil:Cooling:DX:SingleSpeed,
+    Core DX Cooling Coil,    !- Name
+    CoreDXCCoilAvailSched,   !- Availability Schedule Name
+    autosize,                !- Gross Rated Total Cooling Capacity {W}
+    autosize,                !- Gross Rated Sensible Heat Ratio
+    3.0,                     !- Gross Rated Cooling COP {W/W}
+    autosize,                !- Rated Air Flow Rate {m3/s}
+    ,                        !- Rated Evaporator Fan Power Per Volume Flow Rate {W/(m3/s)}
+    Core Zone IEC Outlet Node,  !- Air Inlet Node Name
+    Core Zone CCoil Air Outlet Node,  !- Air Outlet Node Name
+    DXSysACCoolCapFT,        !- Total Cooling Capacity Function of Temperature Curve Name
+    DXSysACCoolCapFFF,       !- Total Cooling Capacity Function of Flow Fraction Curve Name
+    DXSysACCoolEIRFT,        !- Energy Input Ratio Function of Temperature Curve Name
+    DXSysACCoolEIRFFF,       !- Energy Input Ratio Function of Flow Fraction Curve Name
+    DXSysACCoolPLFFPLR,      !- Part Load Fraction Correlation Curve Name
+    ,                        !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {C}
+    ,                        !- Nominal Time for Condensate Removal to Begin {s}
+    ,                        !- Ratio of Initial Moisture Evaporation Rate and Steady State Latent Capacity {dimensionless}
+    ,                        !- Maximum Cycling Rate {cycles/hr}
+    ,                        !- Latent Capacity Time Constant {s}
+    ,                        !- Condenser Air Inlet Node Name
+    ,                        !- Condenser Type
+    ,                        !- Evaporative Condenser Effectiveness {dimensionless}
+    ,                        !- Evaporative Condenser Air Flow Rate {m3/s}
+    ,                        !- Evaporative Condenser Pump Rated Power Consumption {W}
+    ,                        !- Crankcase Heater Capacity {W}
+    ,                        !- Maximum Outdoor Dry-Bulb Temperature for Crankcase Heater Operation {C}
+    ,                        !- Supply Water Storage Tank Name
+    ,                        !- Condensate Collection Water Storage Tank Name
+    ,                        !- Basin Heater Capacity {W/K}
+    ,                        !- Basin Heater Setpoint Temperature {C}
+    ,                        !- Basin Heater Operating Schedule Name
+    ,                        !- Sensible Heat Ratio Function of Temperature Curve Name
+    ,                        !- Sensible Heat Ratio Function of Flow Fraction Curve Name
+    Yes;                     !- Report ASHRAE Standard 127 Performance Ratings
+
+Schedule:Compact,
+    CoreDXCCoilAvailSched,   !- Name
+    Fraction,                !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until:  7:00, 1.0,       !- Field 4
+    Until: 17:00, 1.0,       !- Field 6
+    Until: 24:00, 1.0;       !- Field 8
+
+Schedule:Compact,
+    CoreChWaterCoilAvailSched,  !- Name
+    Fraction,                !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, 0.0;       !- Field 4
+
+OutdoorAir:Mixer,
+    Core OAM Box,            !- Name
+    Core Zone Mixed Air Node,!- Mixed Air Node Name
+    Core Outside Air Inlet Node,  !- Outdoor Air Stream Node Name
+    Core Relief Air Outlet Node,  !- Relief Air Stream Node Name
+    Core Zone Return Air Node;  !- Return Air Stream Node Name
+
+AirLoopHVAC:ZoneSplitter,
+    Core Supply Air Splitter,!- Name
+    Core Plenum Outlet Node, !- Inlet Node Name
+    Core Zone ATU Inlet Node;!- Outlet 1 Node Name
+
+AirLoopHVAC:SupplyPlenum,
+    Core Supply Plenum,      !- Name
+    CORE,                    !- Zone Name
+    Core Plenum Zone Node,   !- Zone Node Name
+    Core Zone Equipment Inlet Node,  !- Inlet Node Name
+    Core Plenum Outlet Node; !- Outlet 1 Node Name
+
+CoilSystem:Cooling:DX,
+    Core Zone DX Cooling Coil,  !- Name
+    CoreDXCCoilAvailSched,   !- Availability Schedule Name
+    Core Zone IEC Outlet Node,  !- DX Cooling Coil System Inlet Node Name
+    Core Zone CCoil Air Outlet Node,  !- DX Cooling Coil System Outlet Node Name
+    Core Zone CCoil Air Outlet Node,  !- DX Cooling Coil System Sensor Node Name
+    Coil:Cooling:DX:SingleSpeed,  !- Cooling Coil Object Type
+    Core DX Cooling Coil,    !- Cooling Coil Name
+    None,                    !- Dehumidification Control Type
+    yes,                     !- Run on Sensible Load
+    No;                      !- Run on Latent Load
+
+EvaporativeCooler:Indirect:ResearchSpecial,
+    Core IEC,                !- Name
+    ALWAYS_ON,               !- Availability Schedule Name
+    0.70,                    !- Cooler Wetbulb Design Effectiveness
+    IECEffWBFlowMod,         !- Wetbulb Effectiveness Flow Ratio Modifier Curve Name
+    0.72,                    !- Cooler Drybulb Design Effectiveness
+    IECEffDBFlowMod,         !- Drybulb Effectiveness Flow Ratio Modifier Curve Name
+    autosize,                !- Recirculating Water Pump Design Power {W}
+    150.0,                   !- Water Pump Power Sizing Factor {W/(m3/s)}
+    IECPumpPowerMod,         !- Water Pump Power Modifier Curve Name
+    autosize,                !- Secondary Air Design Flow Rate {m3/s}
+    1.4,                     !- Secondary Air Flow Scaling Factor {dimensionless}
+    autosize,                !- Secondary Air Fan Design Power {W}
+    200.0,                   !- Secondary Air Fan Sizing Specific Power {W/(m3/s)}
+    IECFanPowerMod,          !- Secondary Air Fan Power Modifier Curve Name
+    Core Zone DEC Outlet Node,  !- Primary Air Inlet Node Name
+    Core Zone IEC Outlet Node,  !- Primary Air Outlet Node Name
+    autosize,                !- Primary Air Design Flow Rate {m3/s}
+    0.9,                     !- Dewpoint Effectiveness Factor
+    Core IEC Secondary Air Inlet Node,  !- Secondary Air Inlet Node Name
+    Core IEC Secondary Air Outlet Node,  !- Secondary Air Outlet Node Name
+    Core Zone IEC Outlet Node,  !- Sensor Node Name
+    ,                        !- Relief Air Inlet Node Name
+    ,                        !- Water Supply Storage Tank Name
+    0.0,                     !- Drift Loss Fraction
+    ,                        !- Blowdown Concentration Ratio
+    20.0,                    !- Evaporative Operation Minimum Limit Secondary Air Drybulb Temperature
+    24.0,                    !- Evaporative Operation Maximum Limit Outdoor Wetbulb Temperature
+    50.0;                    !- Dry Operation Maximum Limit Outdoor Drybulb Temperature
+
+Schedule:Compact,
+    ALWAYS_ON,               !- Name
+    Fraction,                !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, 1.0;       !- Field 4
+
+EvaporativeCooler:Direct:ResearchSpecial,
+    Core DEC,                !- Name
+    ALWAYS_ON,               !- Availability Schedule Name
+    0.7,                     !- Cooler Design Effectiveness
+    ,                        !- Effectiveness Flow Ratio Modifier Curve Name
+    autosize,                !- Primary Air Design Flow Rate {m3/s}
+    30.0,                    !- Recirculating Water Pump Design Power {W}
+    ,                        !- Water Pump Power Sizing Factor {W/(m3/s)}
+    ,                        !- Water Pump Power Modifier Curve Name
+    Core Zone Supply Fan Outlet Node,  !- Air Inlet Node Name
+    Core Zone DEC Outlet Node,  !- Air Outlet Node Name
+    Core Zone DEC Outlet Node,  !- Sensor Node Name
+    ,                        !- Water Supply Storage Tank Name
+    0.0,                     !- Drift Loss Fraction
+    3.0,                     !- Blowdown Concentration Ratio
+    16.0,                    !- Evaporative Operation Minimum Drybulb Temperature
+    18.0,                    !- Evaporative Operation Maximum Limit Wetbulb Temperature
+    20.0;                    !- Evaporative Operation Maximum Limit Drybulb Temperature
+
+Controller:WaterCoil,
+    Core CW Coil Controller, !- Name
+    Temperature,             !- Control Variable
+    Reverse,                 !- Action
+    FLOW,                    !- Actuator Variable
+    Core Air Loop Outlet Node,  !- Sensor Node Name
+    Core CWCoil Water Inlet Node,  !- Actuator Node Name
+    autosize,                !- Controller Convergence Tolerance {deltaC}
+    autosize,                !- Maximum Actuated Flow {m3/s}
+    0.0;                     !- Minimum Actuated Flow {m3/s}
+
+AirLoopHVAC,
+    Core Zone Air System,    !- Name
+    Core Sys Controllers,    !- Controller List Name
+    Core Avail List,         !- Availability Manager List Name
+    autosize,                !- Design Supply Air Flow Rate {m3/s}
+    Core Zone Air Loop Branches,  !- Branch List Name
+    ,                        !- Connector List Name
+    Core Zone Return Air Node,  !- Supply Side Inlet Node Name
+    Core Return Air Mixer Outlet,  !- Demand Side Outlet Node Name
+    Core Zone Equipment Inlet Node,  !- Demand Side Inlet Node Names
+    Core Air Loop Outlet Node;  !- Supply Side Outlet Node Names
+
+AirLoopHVAC:ControllerList,
+    Core Sys Controllers,    !- Name
+    Controller:WaterCoil,    !- Controller 1 Object Type
+    Core CW Coil Controller; !- Controller 1 Name
+
+AvailabilityManagerAssignmentList,
+    Core Avail List,         !- Name
+    AvailabilityManager:Scheduled,  !- Availability Manager 1 Object Type
+    Core Avail;              !- Availability Manager 1 Name
+
+AvailabilityManager:Scheduled,
+    Core Avail,              !- Name
+    FanAndCoilAvailSched;    !- Schedule Name
+
+BranchList,
+    Core Zone Air Loop Branches,  !- Name
+    Core Zone Air Loop Main Branch;  !- Branch 1 Name
+
+BranchList,
+    Cooling Supply Side Branches,  !- Name
+    CW Supply Pump Branch,   !- Branch 1 Name
+    CW Supply Chiller Branch,!- Branch 2 Name
+    CW Supply Bypass Branch, !- Branch 3 Name
+    CW Supply Outlet Branch; !- Branch 4 Name
+
+BranchList,
+    Cooling Demand Side Branches,  !- Name
+    CW Demand Inlet Branch,  !- Branch 1 Name
+    Core CW Cooling Coil Branch,  !- Branch 2 Name
+    CW Demand Bypass Branch, !- Branch 3 Name
+    CW Demand Outlet Branch; !- Branch 4 Name
+
+BranchList,
+    Condenser Supply Side Branches,  !- Name
+    Condenser Supply Pump Branch,  !- Branch 1 Name
+    Condenser Supply Tower Branch,  !- Branch 2 Name
+    Condenser Supply Bypass Branch,  !- Branch 3 Name
+    Condenser Supply Outlet Branch;  !- Branch 4 Name
+
+BranchList,
+    Condenser Demand Side Branches,  !- Name
+    Condenser Demand Inlet Branch,  !- Branch 1 Name
+    Condenser Demand Bypass Branch,  !- Branch 2 Name
+    Condenser Demand Chiller Branch,  !- Branch 3 Name
+    Condenser Demand Outlet Branch;  !- Branch 4 Name
+
+AirLoopHVAC:SupplyPath,
+    CoreSysSupplyPath,       !- Name
+    Core Zone Equipment Inlet Node,  !- Supply Air Path Inlet Node Name
+    AirLoopHVAC:SupplyPlenum,!- Component 1 Object Type
+    Core Supply Plenum,      !- Component 1 Name
+    AirLoopHVAC:ZoneSplitter,!- Component 2 Object Type
+    Core Supply Air Splitter;!- Component 2 Name
+
+AirLoopHVAC:ZoneMixer,
+    Core Return Air Mixer,   !- Name
+    Core Return Air Mixer Outlet Node,  !- Outlet Node Name
+    Core Zone Return Node;   !- Inlet 1 Node Name
+
+AirLoopHVAC:ReturnPath,
+    CoreSysReturnPath,       !- Name
+    Core Return Air Mixer Outlet Node,  !- Return Air Path Outlet Node Name
+    AirLoopHVAC:ZoneMixer,   !- Component 1 Object Type
+    Core Return Air Mixer;   !- Component 1 Name
+
+AirLoopHVAC:OutdoorAirSystem:EquipmentList,
+    Core OA Equipment,       !- Name
+    OutdoorAir:Mixer,        !- Component 1 Object Type
+    Core OAM Box;            !- Component 1 Name
+
+Connector:Splitter,
+    CW Loop Supply Splitter, !- Name
+    CW Supply Pump Branch,   !- Inlet Branch Name
+    CW Supply Chiller Branch,!- Outlet Branch 1 Name
+    CW Supply Bypass Branch; !- Outlet Branch 2 Name
+
+Connector:Splitter,
+    CW Loop Demand Splitter, !- Name
+    CW Demand Inlet Branch,  !- Inlet Branch Name
+    Core CW Cooling Coil Branch,  !- Outlet Branch 1 Name
+    CW Demand Bypass Branch; !- Outlet Branch 2 Name
+
+Connector:Splitter,
+    Condenser Supply Splitter,  !- Name
+    Condenser Supply Pump Branch,  !- Inlet Branch Name
+    Condenser Supply Tower Branch,  !- Outlet Branch 1 Name
+    Condenser Supply Bypass Branch;  !- Outlet Branch 2 Name
+
+Connector:Splitter,
+    Condenser Demand Splitter,  !- Name
+    Condenser Demand Inlet Branch,  !- Inlet Branch Name
+    Condenser Demand Chiller Branch,  !- Outlet Branch 1 Name
+    Condenser Demand Bypass Branch;  !- Outlet Branch 2 Name
+
+Connector:Mixer,
+    CW Loop Supply Mixer,    !- Name
+    CW Supply Outlet Branch, !- Outlet Branch Name
+    CW Supply Chiller Branch,!- Inlet Branch 1 Name
+    CW Supply Bypass Branch; !- Inlet Branch 2 Name
+
+Connector:Mixer,
+    CW Loop Demand Mixer,    !- Name
+    CW Demand Outlet Branch, !- Outlet Branch Name
+    Core CW Cooling Coil Branch,  !- Inlet Branch 1 Name
+    CW Demand Bypass Branch; !- Inlet Branch 2 Name
+
+Connector:Mixer,
+    Condenser Supply Mixer,  !- Name
+    Condenser Supply Outlet Branch,  !- Outlet Branch Name
+    Condenser Supply Tower Branch,  !- Inlet Branch 1 Name
+    Condenser Supply Bypass Branch;  !- Inlet Branch 2 Name
+
+Connector:Mixer,
+    Condenser Demand Mixer,  !- Name
+    Condenser Demand Outlet Branch,  !- Outlet Branch Name
+    Condenser Demand Chiller Branch,  !- Inlet Branch 1 Name
+    Condenser Demand Bypass Branch;  !- Inlet Branch 2 Name
+
+ConnectorList,
+    Cooling Supply Side Connectors,  !- Name
+    Connector:Splitter,      !- Connector 1 Object Type
+    CW Loop Supply Splitter, !- Connector 1 Name
+    Connector:Mixer,         !- Connector 2 Object Type
+    CW Loop Supply Mixer;    !- Connector 2 Name
+
+ConnectorList,
+    Cooling Demand Side Connectors,  !- Name
+    Connector:Splitter,      !- Connector 1 Object Type
+    CW Loop Demand Splitter, !- Connector 1 Name
+    Connector:Mixer,         !- Connector 2 Object Type
+    CW Loop Demand Mixer;    !- Connector 2 Name
+
+ConnectorList,
+    Condenser Supply Side Connectors,  !- Name
+    Connector:Splitter,      !- Connector 1 Object Type
+    Condenser Supply Splitter,  !- Connector 1 Name
+    Connector:Mixer,         !- Connector 2 Object Type
+    Condenser Supply Mixer;  !- Connector 2 Name
+
+ConnectorList,
+    Condenser Demand Side Connectors,  !- Name
+    Connector:Splitter,      !- Connector 1 Object Type
+    Condenser Demand Splitter,  !- Connector 1 Name
+    Connector:Mixer,         !- Connector 2 Object Type
+    Condenser Demand Mixer;  !- Connector 2 Name
+
+NodeList,
+    CoreOutsideAirInletNodes,!- Name
+    Core Outside Air Inlet Node;  !- Node 1 Name
+
+NodeList,
+    CoreIECOutsideAirInletNodes,  !- Name
+    Core IEC Secondary Air Inlet Node;  !- Node 1 Name
+
+NodeList,
+    Core Sys Setpoint nodes, !- Name
+    Core Zone DEC Outlet Node,  !- Node 1 Name
+    Core Zone IEC Outlet Node,  !- Node 2 Name
+    Core Zone CCoil Air Outlet Node,  !- Node 3 Name
+    Core Air Loop Outlet Node;  !- Node 4 Name
+
+OutdoorAir:NodeList,
+    CoreOutsideAirInletNodes;!- Node or NodeList Name 1
+
+OutdoorAir:NodeList,
+    CoreIECOutsideAirInletNodes;  !- Node or NodeList Name 1
+
+Pipe:Adiabatic,
+    CW Supply Side Bypass Pipe,  !- Name
+    CW Supply Bypass Inlet Node,  !- Inlet Node Name
+    CW Supply Bypass Outlet Node;  !- Outlet Node Name
+
+Pipe:Adiabatic,
+    CW Supply Side Outlet Pipe,  !- Name
+    CW Supply Side Exit Pipe Inlet Node,  !- Inlet Node Name
+    CW Supply Outlet Node;   !- Outlet Node Name
+
+Pipe:Adiabatic,
+    CW Demand Side Inlet Pipe,  !- Name
+    CW Demand Inlet Node,    !- Inlet Node Name
+    CW Demand Entrance Pipe Outlet Node;  !- Outlet Node Name
+
+Pipe:Adiabatic,
+    CW Demand Side Bypass Pipe,  !- Name
+    CW Demand Bypass Inlet Node,  !- Inlet Node Name
+    CW Demand Bypass Outlet Node;  !- Outlet Node Name
+
+Pipe:Adiabatic,
+    CW Demand Side Outlet Pipe,  !- Name
+    CW Demand Exit Pipe Inlet Node,  !- Inlet Node Name
+    CW Demand Outlet Node;   !- Outlet Node Name
+
+Pipe:Adiabatic,
+    Condenser Supply Bypass Pipe,  !- Name
+    Cond Supply Bypass Inlet Node,  !- Inlet Node Name
+    Cond Supply Bypass Outlet Node;  !- Outlet Node Name
+
+Pipe:Adiabatic,
+    Condenser Supply Outlet Pipe,  !- Name
+    Condenser Supply Exit Pipe Inlet Node,  !- Inlet Node Name
+    Condenser Supply Outlet Node;  !- Outlet Node Name
+
+Pipe:Adiabatic,
+    Condenser Demand Inlet Pipe,  !- Name
+    Condenser Demand Inlet Node,  !- Inlet Node Name
+    Condenser Demand Entrance Pipe Outlet Node;  !- Outlet Node Name
+
+Pipe:Adiabatic,
+    Condenser Demand Bypass Pipe,  !- Name
+    Cond Demand Bypass Inlet Node,  !- Inlet Node Name
+    Cond Demand Bypass Outlet Node;  !- Outlet Node Name
+
+Pipe:Adiabatic,
+    Condenser Demand Outlet Pipe,  !- Name
+    Condenser Demand Exit Pipe Inlet Node,  !- Inlet Node Name
+    Condenser Demand Outlet Node;  !- Outlet Node Name
+
+Pump:VariableSpeed,
+    CW Circ Pump,            !- Name
+    CW Supply Inlet Node,    !- Inlet Node Name
+    CW Pump Outlet Node,     !- Outlet Node Name
+    autosize,                !- Design Maximum Flow Rate {m3/s}
+    160000,                  !- Design Pump Head {Pa}
+    autosize,                !- Design Power Consumption {W}
+    0.87,                    !- Motor Efficiency
+    0.0,                     !- Fraction of Motor Inefficiencies to Fluid Stream
+    0,                       !- Coefficient 1 of the Part Load Performance Curve
+    1,                       !- Coefficient 2 of the Part Load Performance Curve
+    0,                       !- Coefficient 3 of the Part Load Performance Curve
+    0,                       !- Coefficient 4 of the Part Load Performance Curve
+    0,                       !- Design Minimum Flow Rate {m3/s}
+    INTERMITTENT;            !- Pump Control Type
+
+Pump:VariableSpeed,
+    Cond Circ Pump,          !- Name
+    Condenser Supply Inlet Node,  !- Inlet Node Name
+    Condenser Pump Outlet Node,  !- Outlet Node Name
+    autosize,                !- Design Maximum Flow Rate {m3/s}
+    140000,                  !- Design Pump Head {Pa}
+    autosize,                !- Design Power Consumption {W}
+    0.9,                     !- Motor Efficiency
+    0.0,                     !- Fraction of Motor Inefficiencies to Fluid Stream
+    0,                       !- Coefficient 1 of the Part Load Performance Curve
+    1,                       !- Coefficient 2 of the Part Load Performance Curve
+    0,                       !- Coefficient 3 of the Part Load Performance Curve
+    0,                       !- Coefficient 4 of the Part Load Performance Curve
+    0,                       !- Design Minimum Flow Rate {m3/s}
+    INTERMITTENT;            !- Pump Control Type
+
+Chiller:Electric,
+    Chiller,                 !- Name
+    WaterCooled,             !- Condenser Type
+    autosize,                !- Nominal Capacity {W}
+    5.0,                     !- Nominal COP {W/W}
+    Chiller Inlet Node,      !- Chilled Water Inlet Node Name
+    Chiller Outlet Node,     !- Chilled Water Outlet Node Name
+    Chiller Condenser Inlet Node,  !- Condenser Inlet Node Name
+    Chiller Condenser Outlet Node,  !- Condenser Outlet Node Name
+    0.15,                    !- Minimum Part Load Ratio
+    1.0,                     !- Maximum Part Load Ratio
+    0.65,                    !- Optimum Part Load Ratio
+    29.44,                   !- Design Condenser Inlet Temperature {C}
+    2.682759,                !- Temperature Rise Coefficient
+    6.667,                   !- Design Chilled Water Outlet Temperature {C}
+    autosize,                !- Design Chilled Water Flow Rate {m3/s}
+    autosize,                !- Design Condenser Fluid Flow Rate {m3/s}
+    0.94483600,              !- Coefficient 1 of Capacity Ratio Curve
+    -.05700880,              !- Coefficient 2 of Capacity Ratio Curve
+    -.00185486,              !- Coefficient 3 of Capacity Ratio Curve
+    1.907846,                !- Coefficient 1 of Power Ratio Curve
+    -1.20498700,             !- Coefficient 2 of Power Ratio Curve
+    0.26346230,              !- Coefficient 3 of Power Ratio Curve
+    0.03303,                 !- Coefficient 1 of Full Load Ratio Curve
+    0.6852,                  !- Coefficient 2 of Full Load Ratio Curve
+    0.2818,                  !- Coefficient 3 of Full Load Ratio Curve
+    5,                       !- Chilled Water Outlet Temperature Lower Limit {C}
+    NotModulated;            !- Chiller Flow Mode
+
+CoolingTower:VariableSpeed,
+    Cooling Tower,           !- Name
+    Condenser Tower Inlet Node,  !- Water Inlet Node Name
+    Condenser Tower Outlet Node,  !- Water Outlet Node Name
+    YorkCalcUserDefined,     !- Model Type
+    YorkCalc Default Tower Model,  !- Model Coefficient Name
+    ,                        !- Design Inlet Air Wet-Bulb Temperature {C}
+    ,                        !- Design Approach Temperature {deltaC}
+    ,                        !- Design Range Temperature {deltaC}
+    autosize,                !- Design Water Flow Rate {m3/s}
+    autosize,                !- Design Air Flow Rate {m3/s}
+    autosize,                !- Design Fan Power {W}
+    CoolingTowerFanRatioCurve,  !- Fan Power Ratio Function of Air Flow Rate Ratio Curve Name
+    0.2,                     !- Minimum Air Flow Rate Ratio
+    0.125,                   !- Fraction of Tower Capacity in Free Convection Regime
+    450.0,                   !- Basin Heater Capacity {W/K}
+    4.5,                     !- Basin Heater Setpoint Temperature {C}
+    ,                        !- Basin Heater Operating Schedule Name
+    SaturatedExit,           !- Evaporation Loss Mode
+    ,                        !- Evaporation Loss Factor {percent/K}
+    0.05,                    !- Drift Loss Percent {percent}
+    ConcentrationRatio,      !- Blowdown Calculation Mode
+    4.0;                     !- Blowdown Concentration Ratio
+
+CoolingTowerPerformance:YorkCalc,
+    YorkCalc Default Tower Model,  !- Name
+    -34.4,                   !- Minimum Inlet Air Wet-Bulb Temperature {C}
+    26.6667,                 !- Maximum Inlet Air Wet-Bulb Temperature {C}
+    1.1111,                  !- Minimum Range Temperature {deltaC}
+    22.2222,                 !- Maximum Range Temperature {deltaC}
+    1.1111,                  !- Minimum Approach Temperature {deltaC}
+    40.0,                    !- Maximum Approach Temperature {deltaC}
+    0.5,                     !- Minimum Water Flow Rate Ratio
+    4.0,                     !- Maximum Water Flow Rate Ratio
+    8.0,                     !- Maximum Liquid to Gas Ratio
+    -0.359741205,            !- Coefficient 1
+    -0.055053608,            !- Coefficient 2
+    0.0023850432,            !- Coefficient 3
+    0.173926877,             !- Coefficient 4
+    -0.0248473764,           !- Coefficient 5
+    0.00048430224,           !- Coefficient 6
+    -0.005589849456,         !- Coefficient 7
+    0.0005770079712,         !- Coefficient 8
+    -0.00001342427256,       !- Coefficient 9
+    2.84765801111111,        !- Coefficient 10
+    -0.121765149,            !- Coefficient 11
+    0.0014599242,            !- Coefficient 12
+    1.680428651,             !- Coefficient 13
+    -0.0166920786,           !- Coefficient 14
+    -0.0007190532,           !- Coefficient 15
+    -0.025485194448,         !- Coefficient 16
+    0.0000487491696,         !- Coefficient 17
+    0.00002719234152,        !- Coefficient 18
+    -0.0653766255555556,     !- Coefficient 19
+    -0.002278167,            !- Coefficient 20
+    0.0002500254,            !- Coefficient 21
+    -0.0910565458,           !- Coefficient 22
+    0.00318176316,           !- Coefficient 23
+    0.000038621772,          !- Coefficient 24
+    -0.0034285382352,        !- Coefficient 25
+    0.00000856589904,        !- Coefficient 26
+    -0.000001516821552;      !- Coefficient 27
+
+PlantLoop,
+    Chilled Water Loop,      !- Name
+    Water,                   !- Fluid Type
+    ,                        !- User Defined Fluid Type
+    CW Loop Operation,       !- Plant Equipment Operation Scheme Name
+    CW Supply Outlet Node,   !- Loop Temperature Setpoint Node Name
+    100,                     !- Maximum Loop Temperature {C}
+    3,                       !- Minimum Loop Temperature {C}
+    autosize,                !- Maximum Loop Flow Rate {m3/s}
+    0,                       !- Minimum Loop Flow Rate {m3/s}
+    autocalculate,           !- Plant Loop Volume {m3}
+    CW Supply Inlet Node,    !- Plant Side Inlet Node Name
+    CW Supply Outlet Node,   !- Plant Side Outlet Node Name
+    Cooling Supply Side Branches,  !- Plant Side Branch List Name
+    Cooling Supply Side Connectors,  !- Plant Side Connector List Name
+    CW Demand Inlet Node,    !- Demand Side Inlet Node Name
+    CW Demand Outlet Node,   !- Demand Side Outlet Node Name
+    Cooling Demand Side Branches,  !- Demand Side Branch List Name
+    Cooling Demand Side Connectors,  !- Demand Side Connector List Name
+    Optimal;                 !- Load Distribution Scheme
+
+PlantLoop,
+    Condenser Loop,          !- Name
+    Water,                   !- Fluid Type
+    ,                        !- User Defined Fluid Type
+    Tower Loop Operation,    !- Plant Equipment Operation Scheme Name
+    Condenser Supply Outlet Node,  !- Loop Temperature Setpoint Node Name
+    100,                     !- Maximum Loop Temperature {C}
+    3,                       !- Minimum Loop Temperature {C}
+    autosize,                !- Maximum Loop Flow Rate {m3/s}
+    0,                       !- Minimum Loop Flow Rate {m3/s}
+    autocalculate,           !- Plant Loop Volume {m3}
+    Condenser Supply Inlet Node,  !- Plant Side Inlet Node Name
+    Condenser Supply Outlet Node,  !- Plant Side Outlet Node Name
+    Condenser Supply Side Branches,  !- Plant Side Branch List Name
+    Condenser Supply Side Connectors,  !- Plant Side Connector List Name
+    Condenser Demand Inlet Node,  !- Demand Side Inlet Node Name
+    Condenser Demand Outlet Node,  !- Demand Side Outlet Node Name
+    Condenser Demand Side Branches,  !- Demand Side Branch List Name
+    Condenser Demand Side Connectors,  !- Demand Side Connector List Name
+    Optimal;                 !- Load Distribution Scheme
+
+PlantEquipmentList,
+    Chiller Plant,           !- Name
+    Chiller:Electric,        !- Equipment 1 Object Type
+    Chiller;                 !- Equipment 1 Name
+
+PlantEquipmentList,
+    Tower Plant,             !- Name
+    CoolingTower:VariableSpeed,  !- Equipment 1 Object Type
+    Cooling Tower;           !- Equipment 1 Name
+
+PlantEquipmentOperation:CoolingLoad,
+    CW Loop Cooling Load,    !- Name
+    0,                       !- Load Range 1 Lower Limit {W}
+    1000000000,              !- Load Range 1 Upper Limit {W}
+    Chiller Plant;           !- Range 1 Equipment List Name
+
+PlantEquipmentOperation:CoolingLoad,
+    Tower Load,              !- Name
+    0,                       !- Load Range 1 Lower Limit {W}
+    1000000000,              !- Load Range 1 Upper Limit {W}
+    Tower Plant;             !- Range 1 Equipment List Name
+
+PlantEquipmentOperationSchemes,
+    CW Loop Operation,       !- Name
+    PlantEquipmentOperation:CoolingLoad,  !- Control Scheme 1 Object Type
+    CW Loop Cooling Load,    !- Control Scheme 1 Name
+    Chiller AlwaysOnSchedule;!- Control Scheme 1 Schedule Name
+
+PlantEquipmentOperationSchemes,
+    Tower Loop Operation,    !- Name
+    PlantEquipmentOperation:CoolingLoad,  !- Control Scheme 1 Object Type
+    Tower Load,              !- Control Scheme 1 Name
+    Tower AlwaysOnSchedule;  !- Control Scheme 1 Schedule Name
+
+Schedule:Compact,
+    Chiller AlwaysOnSchedule,!- Name
+    CW Loop On/Off,          !- Schedule Type Limits Name
+    THROUGH: 12/31,          !- Field 1
+    FOR: AllDays,            !- Field 2
+    UNTIL: 24:00, 1;         !- Field 4
+
+Schedule:Compact,
+    Tower AlwaysOnSchedule,  !- Name
+    Tower On/Off,            !- Schedule Type Limits Name
+    THROUGH: 12/31,          !- Field 1
+    FOR: AllDays,            !- Field 2
+    UNTIL: 24:00, 1;         !- Field 4
+
+ScheduleTypeLimits,
+    CW Loop On/Off,          !- Name
+    0,                       !- Lower Limit Value
+    1,                       !- Upper Limit Value
+    DISCRETE;                !- Numeric Type
+
+ScheduleTypeLimits,
+    Tower On/Off,            !- Name
+    0,                       !- Lower Limit Value
+    1,                       !- Upper Limit Value
+    DISCRETE;                !- Numeric Type
+
+Curve:Quadratic,
+    DXSysACCoolCapFFF,       !- Name
+    0.8,                     !- Coefficient1 Constant
+    0.2,                     !- Coefficient2 x
+    0.0,                     !- Coefficient3 x**2
+    0.5,                     !- Minimum Value of x
+    1.5;                     !- Maximum Value of x
+
+Curve:Quadratic,
+    DXSysACCoolEIRFFF,       !- Name
+    1.156,                   !- Coefficient1 Constant
+    -0.1816,                 !- Coefficient2 x
+    0.0256,                  !- Coefficient3 x**2
+    0.5,                     !- Minimum Value of x
+    1.5;                     !- Maximum Value of x
+
+Curve:Quadratic,
+    DXSysACCoolPLFFPLR,      !- Name
+    0.85,                    !- Coefficient1 Constant
+    0.15,                    !- Coefficient2 x
+    0.0,                     !- Coefficient3 x**2
+    0.0,                     !- Minimum Value of x
+    1.0;                     !- Maximum Value of x
+
+Curve:Quadratic,
+    ECM FanPower fFlow,      !- Name
+    0.0,                     !- Coefficient1 Constant
+    1.0,                     !- Coefficient2 x
+    0.0,                     !- Coefficient3 x**2
+    0.0,                     !- Minimum Value of x
+    99.0;                    !- Maximum Value of x
+
+Curve:Quadratic,
+    UPS Efficiency fPLR,     !- Name
+    1.0,                     !- Coefficient1 Constant
+    0.0,                     !- Coefficient2 x
+    0.0,                     !- Coefficient3 x**2
+    0.0,                     !- Minimum Value of x
+    99.0;                    !- Maximum Value of x
+
+Curve:Cubic,
+    CoolingTowerFanRatioCurve,  !- Name
+    -0.00931516301535329,    !- Coefficient1 Constant
+    0.0512333965844443,      !- Coefficient2 x
+    -0.0838364671381841,     !- Coefficient3 x**2
+    1.04191823356909,        !- Coefficient4 x**3
+    0.15,                    !- Minimum Value of x
+    1.0;                     !- Maximum Value of x
+
+Curve:Biquadratic,
+    DXSysACCoolCapFT,        !- Name
+    0.766956,                !- Coefficient1 Constant
+    0.0107756,               !- Coefficient2 x
+    -0.0000414703,           !- Coefficient3 x**2
+    0.00134961,              !- Coefficient4 y
+    -0.000261144,            !- Coefficient5 y**2
+    0.000457488,             !- Coefficient6 x*y
+    12.77778,                !- Minimum Value of x
+    23.88889,                !- Maximum Value of x
+    18.0,                    !- Minimum Value of y
+    46.11111,                !- Maximum Value of y
+    ,                        !- Minimum Curve Output
+    ,                        !- Maximum Curve Output
+    Temperature,             !- Input Unit Type for X
+    Temperature,             !- Input Unit Type for Y
+    Dimensionless;           !- Output Unit Type
+
+Curve:Biquadratic,
+    DXSysACCoolEIRFT,        !- Name
+    0.297145,                !- Coefficient1 Constant
+    0.0430933,               !- Coefficient2 x
+    -0.000748766,            !- Coefficient3 x**2
+    0.00597727,              !- Coefficient4 y
+    0.000482112,             !- Coefficient5 y**2
+    -0.000956448,            !- Coefficient6 x*y
+    12.77778,                !- Minimum Value of x
+    23.88889,                !- Maximum Value of x
+    18.0,                    !- Minimum Value of y
+    46.11111,                !- Maximum Value of y
+    ,                        !- Minimum Curve Output
+    ,                        !- Maximum Curve Output
+    Temperature,             !- Input Unit Type for X
+    Temperature,             !- Input Unit Type for Y
+    Dimensionless;           !- Output Unit Type
+
+Schedule:Compact,
+    Heating Setpoints,       !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until:  7:00, 20.0,      !- Field 4
+    Until: 17:00, 20.0,      !- Field 6
+    Until: 24:00, 20.0;      !- Field 8
+
+Schedule:Compact,
+    Cooling Setpoints,       !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until:  7:00, 23.0,      !- Field 4
+    Until: 17:00, 23.0,      !- Field 6
+    Until: 24:00, 23.0;      !- Field 8
+
+Table:OneIndependentVariable,
+    IECEffWBFlowMod,         !- Name
+    Cubic,                   !- Curve Type
+    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
+    0.0,                     !- Minimum Value of X
+    1.875,                   !- Maximum Value of X
+    0.0,                     !- Minimum Table Output
+    1.15,                    !- Maximum Table Output
+    Dimensionless,           !- Input Unit Type for X
+    Dimensionless,           !- Output Unit Type
+    ,                        !- Normalization Reference
+    0.0,                     !- X Value #1
+    0.0,                     !- Output Value #1
+    0.125,                   !- X Value #2
+    0.503563817,             !- Output Value #2
+    0.250,                   !- X Value #3
+    0.669042545,             !- Output Value #3
+    0.375,                   !- X Value #4
+    0.765841395,             !- Output Value #4
+    0.500,                   !- X Value #5
+    0.834521272,             !- Output Value #5
+    0.625,                   !- X Value #6
+    0.887793524,             !- Output Value #6
+    0.750,                   !- X Value #7
+    0.931320123,             !- Output Value #7
+    0.875,                   !- N20
+    0.968121338,             !- N21
+    1.000,                   !- N22
+    1.0,                     !- N23
+    1.125,                   !- N24
+    1.028118973,             !- N25
+    1.25,                    !- N26
+    1.053272252,             !- N27
+    1.375,                   !- N28
+    1.07602616,              !- N29
+    1.500,                   !- N30
+    1.09679885,              !- N31
+    1.625,                   !- N32
+    1.115907873,             !- N33
+    1.750,                   !- N34
+    1.133600065,             !- N35
+    1.875,                   !- N36
+    1.150071102;             !- N37
+
+Table:OneIndependentVariable,
+    IECEffDBFlowMod,         !- Name
+    Cubic,                   !- Curve Type
+    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
+    0.0,                     !- Minimum Value of X
+    1.1,                     !- Maximum Value of X
+    0.0,                     !- Minimum Table Output
+    1.0,                     !- Maximum Table Output
+    Dimensionless,           !- Input Unit Type for X
+    Dimensionless,           !- Output Unit Type
+    ,                        !- Normalization Reference
+    0.0,                     !- X Value #1
+    0.0,                     !- Output Value #1
+    0.156016442,             !- X Value #2
+    0.251901141,             !- Output Value #2
+    0.224969531,             !- X Value #3
+    0.272633745,             !- Output Value #3
+    0.245292433,             !- X Value #4
+    0.297085202,             !- Output Value #4
+    0.269624525,             !- X Value #5
+    0.32635468,              !- Output Value #5
+    0.299327692,             !- X Value #6
+    0.362021858,             !- Output Value #6
+    0.33698954,              !- X Value #7
+    0.406441718,             !- Output Value #7
+    0.385709241,             !- N20
+    0.463286713,             !- N21
+    0.453044107,             !- N22
+    0.538617886,             !- N23
+    0.553875806,             !- N24
+    0.643203883,             !- N25
+    0.732741489,             !- N26
+    0.798192771,             !- N27
+    0.899289342,             !- N28
+    0.907534247,             !- N29
+    1.047473735,             !- N30
+    0.989130435,             !- N31
+    1.074970273,             !- N32
+    0.994186047,             !- N33
+    1.104173513,             !- N34
+    1.0;                     !- N35
+
+Table:OneIndependentVariable,
+    IECFanPowerMod,          !- Name
+    Cubic,                   !- Curve Type
+    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
+    0.0,                     !- Minimum Value of X
+    1.0,                     !- Maximum Value of X
+    0.0,                     !- Minimum Table Output
+    1.0,                     !- Maximum Table Output
+    Dimensionless,           !- Input Unit Type for X
+    Dimensionless,           !- Output Unit Type
+    ,                        !- Normalization Reference
+    0,                       !- X Value #1
+    0,                       !- Output Value #1
+    0.125,                   !- X Value #2
+    0.004487103,             !- Output Value #2
+    0.25,                    !- X Value #3
+    0.027204705,             !- Output Value #3
+    0.375,                   !- X Value #4
+    0.078069482,             !- Output Value #4
+    0.5,                     !- X Value #5
+    0.164938489,             !- Output Value #5
+    0.625,                   !- X Value #6
+    0.294637516,             !- Output Value #6
+    0.75,                    !- X Value #7
+    0.473324827,             !- Output Value #7
+    0.875,                   !- N20
+    0.706676969,             !- N21
+    1,                       !- N22
+    1;                       !- N23
+
+Table:OneIndependentVariable,
+    IECPumpPowerMod,         !- Name
+    Cubic,                   !- Curve Type
+    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
+    0.0,                     !- Minimum Value of X
+    1.0,                     !- Maximum Value of X
+    0.0,                     !- Minimum Table Output
+    1.0,                     !- Maximum Table Output
+    Dimensionless,           !- Input Unit Type for X
+    Dimensionless,           !- Output Unit Type
+    ,                        !- Normalization Reference
+    0,                       !- X Value #1
+    0.4,                     !- Output Value #1
+    0.125,                   !- X Value #2
+    0.4,                     !- Output Value #2
+    0.25,                    !- X Value #3
+    0.4,                     !- Output Value #3
+    0.375,                   !- X Value #4
+    0.4,                     !- Output Value #4
+    0.5,                     !- X Value #5
+    1,                       !- Output Value #5
+    0.625,                   !- X Value #6
+    1,                       !- Output Value #6
+    0.75,                    !- X Value #7
+    1,                       !- Output Value #7
+    0.875,                   !- N20
+    1,                       !- N21
+    1,                       !- N22
+    1;                       !- N23
+
+ScheduleTypeLimits,
+    Control Type,            !- Name
+    0,                       !- Lower Limit Value
+    4,                       !- Upper Limit Value
+    DISCRETE;                !- Numeric Type
+
 EnergyManagementSystem:Actuator,
     ActuatorTemperature,     !- Name
     VAV WITH REHEAT COOLING COIL OUTLET,  !- Actuated Component Unique Name
