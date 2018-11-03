@@ -4,6 +4,55 @@
 !-NOTE: All comments with '!-' are ignored by the IDFEditor and are generated automatically.
 !-      Use '!' comments if they need to be retained when using the IDFEditor.
 
+EnergyManagementSystem:Actuator,
+    CoreZoneDECOutletNode_setpoint,  !- Name
+    Core Zone DEC Outlet Node,  !- Actuated Component Unique Name
+    System Node Setpoint,    !- Actuated Component Type
+    Temperature Setpoint;    !- Actuated Component Control Type
+
+EnergyManagementSystem:Actuator,
+    CoreZoneIECOutletNode_setpoint,  !- Name
+    Core Zone IEC Outlet Node,  !- Actuated Component Unique Name
+    System Node Setpoint,    !- Actuated Component Type
+    Temperature Setpoint;    !- Actuated Component Control Type
+
+EnergyManagementSystem:Actuator,
+    CoreZoneCCoilAirOutletNode_setpoint,  !- Name
+    Core Zone CCoil Air Outlet Node,  !- Actuated Component Unique Name
+    System Node Setpoint,    !- Actuated Component Type
+    Temperature Setpoint;    !- Actuated Component Control Type
+
+EnergyManagementSystem:Actuator,
+    CoreAirLoopOutletNode_setpoint,  !- Name
+    Core Air Loop Outlet Node,  !- Actuated Component Unique Name
+    System Node Setpoint,    !- Actuated Component Type
+    Temperature Setpoint;    !- Actuated Component Control Type
+
+EnergyManagementSystem:Sensor,
+    IT_Equip_Power,          !- Name
+    Whole Building,          !- Output:Variable or Output:Meter Index Key Name
+    Facility Total Building Electric Demand Power;  !- Output:Variable or Output:Meter Name
+
+EnergyManagementSystem:Sensor,
+    Whole_Building_Power,    !- Name
+    Whole Building,          !- Output:Variable or Output:Meter Index Key Name
+    Facility Total Electric Demand Power;  !- Output:Variable or Output:Meter Name
+
+EnergyManagementSystem:Sensor,
+    Whole_HVAC_Power,        !- Name
+    Whole Building,          !- Output:Variable or Output:Meter Index Key Name
+    Facility Total HVAC Electric Demand Power;  !- Output:Variable or Output:Meter Name
+
+EnergyManagementSystem:Sensor,
+    OutdoorTemp,             !- Name
+    Environment,             !- Output:Variable or Output:Meter Index Key Name
+    Site Outdoor Air Drybulb Temperature;  !- Output:Variable or Output:Meter Name
+
+EnergyManagementSystem:Sensor,
+    CoreZoneTemp,            !- Name
+    CORE,                    !- Output:Variable or Output:Meter Index Key Name
+    Zone Mean Air Temperature;  !- Output:Variable or Output:Meter Name
+
 Site:GroundTemperature:Shallow,20.03,20.03,20.13,20.30,20.43,20.52,20.62,20.77,20.78,20.55,20.44,20.20;
 Site:GroundTemperature:Deep,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1;
 
@@ -1215,20 +1264,24 @@ EnergyManagementSystem:Program,
 EnergyManagementSystem:Program,
     TempSetpoint,            !- Name
     IF WarmupFlag == 0.0,    !- Program Line 1
-    SET tmp_val1 = @ExtCtrlObs 1 SensorSiteOutdoorAirDrybulbTemperature,  !- Program Line 2
-    SET tmp_val1 = @ExtCtrlObs 2 SensorSiteOutdoorAirDrybulbTemperature,  !- A4
-    SET tmp_val1 = @ExtCtrlObs 3 SensorSiteOutdoorAirDrybulbTemperature,  !- A5
+    SET tmp_val1 = @ExtCtrlObs 1 OutdoorTemp,  !- Program Line 2
+    SET tmp_val1 = @ExtCtrlObs 2 CoreZoneTemp,  !- A4
+    SET tmp_val1 = @ExtCtrlObs 3 CoreZoneTemp,  !- A5
     SET tmp_val1 = @ExtCtrlObs 4 1,  !- A6
-    SET tmp_val1 = @ExtCtrlObs 5 SensorDemandPower,  !- A7
-    SET tmp_val1 = @ExtCtrlObs 6 SensorDemandPower,  !- A8
-    SET tmp_val1 = @ExtCtrlObs 7 SensorDemandPower,  !- A9
+    SET tmp_val1 = @ExtCtrlObs 5 Whole_Building_Power,  !- A7
+    SET tmp_val1 = @ExtCtrlObs 6 IT_Equip_Power,  !- A8
+    SET tmp_val1 = @ExtCtrlObs 7 Whole_HVAC_Power,  !- A9
     SET tmp_val1 = @ExtCtrlAct 0 7,  !- A10
-    SET ActuatorTemperature = @ExtCtrlAct 1,  !- A11
-    SET ActuatorHumidity = @ExtCtrlAct 2,  !- A12
-    ELSE,                    !- A13
-    SET ActuatorTemperature = 20,  !- A14
-    SET ActuatorHumidity = 80,  !- A15
-    ENDIF;                   !- A16
+    SET CoreZoneDECOutletNode_setpoint = @ExtCtrlAct 1,  !- A11
+    SET CoreZoneIECOutletNode_setpoint = @ExtCtrlAct 1,  !- A12
+    SET CoreZoneCCoilAirOutletNode_setpoint = @ExtCtrlAct 1,  !- A13
+    SET CoreAirLoopOutletNode_setpoint = @ExtCtrlAct 1,  !- A14
+    ELSE,                    !- A15
+    SET CoreZoneDECOutletNode_setpoint = 10,  !- A16
+    SET CoreZoneIECOutletNode_setpoint = 10,  !- A17
+    SET CoreZoneCCoilAirOutletNode_setpoint = 10,  !- A18
+    SET CoreAirLoopOutletNode_setpoint = 10,  !- A19
+    ENDIF;                   !- A20
 
 Output:EnergyManagementSystem,
     Verbose,                 !- Actuator Availability Dictionary Reporting
