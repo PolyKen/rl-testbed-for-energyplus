@@ -10,11 +10,6 @@ EnergyManagementSystem:Sensor,
     Site Outdoor Air Drybulb Temperature;  !- Output:Variable or Output:Meter Name
 
 EnergyManagementSystem:Sensor,
-    BoilerInletTemperature,  !- Name
-    HeatSys1 Boiler,         !- Output:Variable or Output:Meter Index Key Name
-    Boiler Inlet Temperature;!- Output:Variable or Output:Meter Name
-
-EnergyManagementSystem:Sensor,
     SiteOutdoorAirRelativeHumidity,  !- Name
     Whole Building,          !- Output:Variable or Output:Meter Index Key Name
     Site Outdoor Air Relative Humidity;  !- Output:Variable or Output:Meter Name
@@ -28,11 +23,6 @@ EnergyManagementSystem:Sensor,
     PeopleAirTemperature,    !- Name
     Core_mid people,         !- Output:Variable or Output:Meter Index Key Name
     People Air Temperature;  !- Output:Variable or Output:Meter Name
-
-EnergyManagementSystem:Sensor,
-    ChillerCondenserInletTemperature,  !- Name
-    CoolSys1 Chiller,        !- Output:Variable or Output:Meter Index Key Name
-    Chiller Condenser Inlet Temperature;  !- Output:Variable or Output:Meter Name
 
 ! RefBldgLargeOfficeNew2004_Chicago.idf
 !
