@@ -399,13 +399,6 @@ Schedule:Compact,
     Until: 17:00, 1.0,       !- Field 6
     Until: 24:00, 1.0;       !- Field 8
 
-Schedule:Compact,
-    CoreChWaterCoilAvailSched,  !- Name
-    Fraction,                !- Schedule Type Limits Name
-    Through: 12/31,          !- Field 1
-    For: AllDays,            !- Field 2
-    Until: 24:00, 0.0;       !- Field 4
-
 OutdoorAir:Mixer,
     Core OAM Box,            !- Name
     Core Zone Mixed Air Node,!- Mixed Air Node Name
@@ -3379,6 +3372,5 @@ OutputControl:Table:Style,
     HTML;                    !- Column Separator
 
 Output:Table:SummaryReports,
-    ABUPS,                   !- Report 1 Name
-    EquipmentSummary;        !- Report 2 Name
+    AllSummary;              !- Report 1 Name
 
